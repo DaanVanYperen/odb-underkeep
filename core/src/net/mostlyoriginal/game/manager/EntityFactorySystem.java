@@ -15,6 +15,7 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.manager.AbstractEntityFactorySystem;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.component.CastleBlock;
 import net.mostlyoriginal.game.component.Quest;
 import net.mostlyoriginal.game.component.Questee;
 import net.mostlyoriginal.game.component.agent.Clickable;
@@ -58,9 +59,58 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "marker-gold":
             case "marker-dungeon":
             case "marker-portal": return createQuest(entity,cx,cy);
+            case "building-tower":
+            case "building-wall":
+            case "building-barracks":
+                    return createBlock(entity, cx, cy);
+            case "building-flag":
+            case "building-trimming-on-tower":
+            case "building-trimming-on-wall-left":
+            case "building-trimming-on-wall":
+            case "building-trimming-on-wall-right":
+            case "building-trimming-top-wall-left":
+            case "building-trimming-top-wall-right":
+            case "building-trimming-bottom-wall-left":
+            case "building-trimming-bottom-wall-right":
+                return createTrimming(entity,cx,cy);
+
             /** @todo Add your entities here */
             default: throw new RuntimeException("No idea how to spawn " + entity);
         }
+    }
+
+    private Entity createTrimming(String entity, int cx, int cy) {
+        return world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Bounds(17,13))
+                .addComponent(new CastleBlock())
+                .addComponent(new Anim(entity, -5));
+    }
+
+    private Entity createBlock(String entity, int cx, int cy) {
+        Anim anim = staticRandomizedAnim(entity);
+        anim.layer=-10;
+        return world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Bounds(17,13))
+                .addComponent(new CastleBlock())
+                .addComponent(anim);
+
+
+        //add("building-hammer", 0,51, 13, 17,1);
+       // add("building-flag", 26,51, 13, 17,2);
+       // add("building-barracks", 0,68, 13, 17,1);
+       // add("building-wall",13,68, 13, 17,3);
+       // add("building-tower", 52,68, 13, 17,1);
+      //  add("building-trimming-on-tower",0,85, 13, 17,1);
+      //  add("building-trimming-on-wall-left",13,85, 13, 17,1);
+       // add("building-trimming-on-wall",26,85, 13, 17,1);
+       // add("building-trimming-on-wall-right",39,85, 13, 17,1);
+      //  add("building-trimming-top-wall-left",13,102, 13, 17,1);
+      //  add("building-trimming-top-wall-right",39,102, 13, 17,1);
+       // add("building-trimming-bottom-wall-left",13,119, 13, 17,1);
+        //add("building-trimming-bottom-wall-right",39,119, 13, 17,1);
+
     }
 
     private Entity createQuest(String entity, int cx, int cy) {
