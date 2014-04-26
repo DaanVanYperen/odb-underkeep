@@ -4,6 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 import net.mostlyoriginal.game.component.CastleBlock;
 import net.mostlyoriginal.game.component.ExpansionPoint;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
@@ -23,6 +25,7 @@ public class CastleSystem extends EntityProcessingSystem {
     public boolean castleDirty = true;
 
     EntityFactorySystem entityFactorySystem;
+    private int randomUsedX;
 
     public CastleSystem() {
         super(Aspect.getAspectForAll(CastleBlock.class));
@@ -184,5 +187,25 @@ public class CastleSystem extends EntityProcessingSystem {
         if ( x<0 || y<0 || x>=W || y>=H ) return;
         castleDirty=true;
         castle[y][x] = type;
+    }
+
+    /**
+     * Not very efficient, but also not called often. ;)
+     *
+     * @return random X coordinate that touches the castle at floor level.
+     */
+    public int getRandomUsedX()
+    {
+        Array<Integer> usedX = new Array<Integer>();
+
+        for ( int x=0;x<W;x++)
+        {
+            if ( castle[0][x] != CastleBlock.Type.EMPTY )
+            {
+                usedX.add(13 + x * 13 + MathUtils.random(0,13));
+            }
+        }
+        Integer result = usedX.random();
+        return result != null ? result : 50;
     }
 }

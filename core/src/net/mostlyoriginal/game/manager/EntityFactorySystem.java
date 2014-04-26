@@ -4,16 +4,23 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
+import net.mostlyoriginal.api.component.graphics.ColorAnimation;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Clamped;
+import net.mostlyoriginal.api.component.physics.Gravity;
 import net.mostlyoriginal.api.component.physics.Physics;
+import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.manager.AbstractEntityFactorySystem;
+import net.mostlyoriginal.api.system.camera.CameraSystem;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.component.agent.Clickable;
@@ -30,6 +37,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
     private TagManager tagManager;
     private AbstractAssetSystem abstractAssetSystem;
+    private CameraSystem cameraSystem;
 
     public Entity createEntity(String entity, int cx, int cy) {
         return createEntity(entity,cx,cy, null);
@@ -52,11 +60,14 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "spelunker" : return createAgent(cx, cy, "spelunker");
             case "indicator" : return createIndicator(cx, cy);
             case "mouse" : return createMouse();
+            case "jumping-imp" :
+                    return createJumpingImp(cx, cy);
             case "marker-monster":
             case "marker-gem":
             case "marker-gold":
             case "marker-dungeon":
-            case "marker-portal": return createQuest(entity,cx,cy);
+            case "marker-portal":
+                    return createQuest(entity,cx,cy);
             case "building-tower":
             case "building-wall":
             case "building-barracks":
@@ -73,13 +84,13 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "building-trimming-bottom-wall-right":
                 return createTrimming(entity,cx,cy);
             case "expand-knight":
-                return createExpansionOption(cx, cy,"knight",CastleBlock.Type.BARRACKS);
+                return createExpansionOption(cx, cy, "knight", CastleBlock.Type.BARRACKS);
             case "expand-mage":
-                return createExpansionOption(cx, cy,"mage",CastleBlock.Type.TOWER);
+                return createExpansionOption(cx, cy, "mage", CastleBlock.Type.TOWER);
             case "expand-spelunker":
-                return createExpansionOption(cx, cy,"spelunker",CastleBlock.Type.SPELUNKER);
+                return createExpansionOption(cx, cy, "spelunker", CastleBlock.Type.SPELUNKER);
             case "expand-wall":
-                return createExpansionOption(cx, cy,"building-wall",CastleBlock.Type.WALL);
+                return createExpansionOption(cx, cy, "building-wall", CastleBlock.Type.WALL);
             case "building-hammer":
                 return createExpansionPoint(entity,cx,cy);
 
@@ -88,13 +99,33 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         }
     }
 
+    private Entity createJumpingImp(int cx, int cy) {
+
+        Physics phys = new Physics();
+        phys.vx = MathUtils.random(25f,80f) * 3f;
+        if ( MathUtils.randomBoolean() ) phys.vx = -phys.vx;
+        phys.vy = MathUtils.random(100f,120f) * 3f;
+        phys.vr = MathUtils.random(-90,90);
+        phys.friction = 1f;
+
+        return world.createEntity()
+                        .addComponent(new Pos(cx, cy))
+                        .addComponent(new Bounds(10, 10))
+                        .addComponent(new Angle())
+                        .addComponent(new Gravity())
+                        .addComponent(new ColorAnimation(new Color(1,1,1,1), new Color(1,1,1,0), Interpolation.linear,1f, 1f))
+                        .addComponent(new Schedule().wait(1f).deleteFromWorld())
+                        .addComponent(phys)
+                        .addComponent(new Anim("marker-monster", 9));
+    }
+
     private Entity createExpansionOption(int cx, int cy, String animId, CastleBlock.Type type) {
         return world.createEntity()
                 .addComponent(new Pos(cx, cy))
                 .addComponent(new Bounds(17,13))
                 .addComponent(new Clickable())
                 .addComponent(new ExpansionOption(type))
-                .addComponent(new Anim(animId, 11));
+                .addComponent(new Anim(animId, 13));
     }
 
     private Entity createTrimming(String entity, int cx, int cy) {
@@ -113,7 +144,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Clickable())
                 .addComponent(new Focusable())
                 .addComponent(new ExpansionPoint())
-                .addComponent(new Anim(entity, 10));
+                .addComponent(new Anim(entity, 12));
     }
 
     private Entity createBlock(String entity, int cx, int cy) {
@@ -143,12 +174,30 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     }
 
     private Entity createQuest(String entity, int cx, int cy) {
-        return world.createEntity()
+        Quest questComp = new Quest(entity);
+        Entity questEntity = world.createEntity()
                 .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(10,10))
+                .addComponent(new Bounds(10, 10))
                 .addComponent(new Clickable())
-                .addComponent(new Quest(entity))
-                .addComponent(new Anim(entity, 51));
+                .addComponent(questComp)
+                .addComponent(new Anim(entity, entity.equals("marker-monster") ? 52 : 51));
+
+        switch(entity)
+        {
+            case "marker-monster":
+                // monsters slowly ascend.
+                Physics physics = new Physics();
+                physics.vy= 1;
+                physics.friction=0;
+                questEntity.addComponent(physics).addComponent(new Erupt(cameraSystem.getPixelHeight() - 8));
+
+            case "marker-gem":
+            case "marker-gold":
+            case "marker-dungeon":
+            case "marker-portal":
+        }
+
+        return questEntity;
     }
 
     private Entity createRadar(int cx, int cy) {
@@ -167,7 +216,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     }
 
     private Entity createIndicator(int cx, int cy) {
-        Anim anim = new Anim("indicator");
+        Anim anim = new Anim("indicator",12);
         anim.visible=false;
         Entity indicator = world.createEntity()
                 .addComponent(new Pos(cx, cy))
@@ -187,10 +236,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         switch(type)
         {
-            case "queen": entity.addComponent(new Anim("queen")); break;
-            case "knight": entity.addComponent(new Anim("knight")); break;
-            case "mage": entity.addComponent(new Anim("mage")); break;
-            case "spelunker": entity.addComponent(new Anim("spelunker")); break;
+            case "queen": entity.addComponent(new Anim("queen",11)); break;
+            case "knight": entity.addComponent(new Anim("knight",11)); break;
+            case "mage": entity.addComponent(new Anim("mage",11)); break;
+            case "spelunker": entity.addComponent(new Anim("spelunker",11)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }
 
@@ -234,7 +283,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     }
 
     private Entity createHills(int cx, int cy) {
-        return world.createEntity().addComponent(new Pos(cx,cy)).addComponent(new Anim("hills", 1));
+        return world.createEntity().addComponent(new Pos(cx,cy)).addComponent(new Anim("hills", 10));
     }
 
     private Entity createBackground() {
@@ -245,7 +294,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     protected void initialize() {
         super.initialize();
         createEntity("background",0,0).addToWorld();
-        createEntity("hills",0,26).addToWorld();
+        createEntity("hills",0,0).addToWorld();
         createEntity("lift",211,30).addToWorld();
 
         createEntity("queen",5, 5).addToWorld();
@@ -265,6 +314,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("radar",240,26).addToWorld();
 
         createEntity("marker-monster", 245, 30).addToWorld();
+        createEntity("marker-monster", 250, 60).addToWorld();
+        createEntity("marker-monster", 255, 80).addToWorld();
+        createEntity("marker-monster", 245, 100).addToWorld();
+        createEntity("marker-monster", 250, 130).addToWorld();
         createEntity("marker-gem", 245, 40).addToWorld();
         createEntity("marker-gold", 245, 50).addToWorld();
         createEntity("marker-dungeon", 245, 60).addToWorld();

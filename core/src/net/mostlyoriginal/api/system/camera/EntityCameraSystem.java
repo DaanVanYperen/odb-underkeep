@@ -5,8 +5,8 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import net.mostlyoriginal.api.component.camera.Camera;
 import net.mostlyoriginal.api.component.basic.Pos;
+import net.mostlyoriginal.api.component.camera.Camera;
 
 /**
  * Lock camera center on camera entity.
@@ -22,6 +22,15 @@ public class EntityCameraSystem extends EntityProcessingSystem {
 
     public EntityCameraSystem() {
         super(Aspect.getAspectForAll(Pos.class, Camera.class));
+    }
+
+    @Override
+    protected void begin() {
+
+        // reset camera.
+        cameraSystem.camera.position.x = cameraSystem.getPixelWidth() /2;
+        cameraSystem.camera.position.y = cameraSystem.getPixelHeight()/2;
+        cameraSystem.camera.update();
     }
 
     @Override
