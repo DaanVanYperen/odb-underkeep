@@ -21,6 +21,9 @@ public class Clamped extends Component implements Serializable {
     public float maxx;
     public float maxy;
 
+    // instead of clamping, wrap around (move to other side).
+    public boolean wrap;
+
     public Clamped(float minx, float miny, float maxx, float maxy) {
         this.minx = minx;
         this.miny = miny;

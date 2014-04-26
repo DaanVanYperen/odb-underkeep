@@ -14,16 +14,15 @@ import net.mostlyoriginal.api.component.physics.Physics;
 
 /**
  * Clamp entity rectangular region.
- *
+ * <p/>
  * Entities with bounds will be constrained to those bounds.
- *
  *
  * @author Daan van Yperen
  * @see net.mostlyoriginal.api.component.physics.Clamped
  * @see net.mostlyoriginal.api.component.basic.Bounds
  */
 @Wire(injectInherited = true)
-@Depends(value={Pos.class, Clamped.class}, optional={Bounds.class})
+@Depends(value = {Pos.class, Clamped.class}, optional = {Bounds.class})
 public class ClampedSystem extends EntityProcessingSystem {
 
     private ComponentMapper<Pos> pm;
@@ -51,18 +50,30 @@ public class ClampedSystem extends EntityProcessingSystem {
         final float wy1 = clamped.miny - bounds.miny;
         final float wy2 = clamped.maxy - bounds.maxy;
 
-        // halt momentum if required.
-        if ( ym.has(e))
-        {
-            Physics physics = ym.get(e);
-            if ( physics.vx < 0 && pos.x + physics.vx* world.delta <= wx1 ) physics.vx =0;
-            if ( physics.vx > 0 && pos.x + physics.vx* world.delta >= wx2 ) physics.vx =0;
-            if ( physics.vy < 0 && pos.y + physics.vy* world.delta <= wy1 ) physics.vy =0;
-            if ( physics.vy > 0 && pos.y + physics.vy* world.delta >= wy2 ) physics.vy =0;
-        }
+        if (clamped.wrap) {
 
-        // clamp coords
-        pos.x = MathUtils.clamp( pos.x, wx1, wx2);
-        pos.y = MathUtils.clamp( pos.y, wy1, wy2);
+            if (ym.has(e)) {
+                Physics physics = ym.get(e);
+                if (physics.vx < 0 && pos.x + physics.vx * world.delta <= wx1) pos.x += wx2 - wx1;
+                if (physics.vx > 0 && pos.x + physics.vx * world.delta >= wx2) pos.x -= wx2 - wx1;
+                if (physics.vy < 0 && pos.y + physics.vy * world.delta <= wy1) pos.y += wy2 - wy1;
+                if (physics.vy > 0 && pos.y + physics.vy * world.delta >= wy2) pos.y -= wy2 - wy1;
+            }
+
+        } else {
+
+            // halt momentum if required.
+            if (ym.has(e)) {
+                Physics physics = ym.get(e);
+                if (physics.vx < 0 && pos.x + physics.vx * world.delta <= wx1) physics.vx = 0;
+                if (physics.vx > 0 && pos.x + physics.vx * world.delta >= wx2) physics.vx = 0;
+                if (physics.vy < 0 && pos.y + physics.vy * world.delta <= wy1) physics.vy = 0;
+                if (physics.vy > 0 && pos.y + physics.vy * world.delta >= wy2) physics.vy = 0;
+            }
+
+            // clamp coords
+            pos.x = MathUtils.clamp(pos.x, wx1, wx2);
+            pos.y = MathUtils.clamp(pos.y, wy1, wy2);
+        }
     }
 }

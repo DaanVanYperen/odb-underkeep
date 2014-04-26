@@ -50,9 +50,14 @@ public class AnimRenderSystem extends EntitySystem {
     };
 
     private float age;
+    public final float zoomLevel;
 
-    public AnimRenderSystem() {
+    /**
+     * @param pixelsPerTexel Match with zoom level to get pixel perfect alignment.
+     */
+    public AnimRenderSystem( float pixelsPerTexel ) {
         super(Aspect.getAspectForAll(Pos.class, Anim.class));
+        this.zoomLevel = pixelsPerTexel;
         batch  = new SpriteBatch(2000);
     }
 
@@ -110,8 +115,8 @@ public class AnimRenderSystem extends EntitySystem {
         {
             // mirror
             batch.draw(frame.getTexture(),
-                    (int)position.x,
-                    (int)position.y,
+                    ((int)(position.x* zoomLevel))/zoomLevel,
+                    ((int)(position.y* zoomLevel))/zoomLevel,
                     angle.ox == Angle.ORIGIN_AUTO ? frame.getRegionWidth() * animation.scale * 0.5f : angle.ox,
                     angle.oy == Angle.ORIGIN_AUTO ? frame.getRegionHeight() * animation.scale * 0.5f : angle.oy,
                     frame.getRegionWidth() * animation.scale,
@@ -129,8 +134,8 @@ public class AnimRenderSystem extends EntitySystem {
         } else if ( angle.rotation != 0 )
         {
             batch.draw(frame,
-                    (int)position.x,
-                    (int)position.y,
+                    ((int)(position.x* zoomLevel))/zoomLevel,
+                    ((int)(position.y* zoomLevel))/zoomLevel,
                     angle.ox == Angle.ORIGIN_AUTO ? frame.getRegionWidth() * animation.scale * 0.5f : angle.ox,
                     angle.oy == Angle.ORIGIN_AUTO ? frame.getRegionHeight() * animation.scale * 0.5f : angle.oy,
                     frame.getRegionWidth() * animation.scale,
@@ -138,8 +143,8 @@ public class AnimRenderSystem extends EntitySystem {
                     angle.rotation);
         } else {
             batch.draw(frame,
-                    (int)position.x,
-                    (int)position.y,
+                    ((int)(position.x* zoomLevel))/zoomLevel,
+                    ((int)(position.y* zoomLevel))/zoomLevel,
                     frame.getRegionWidth() * animation.scale,
                     frame.getRegionHeight() * animation.scale);
         }

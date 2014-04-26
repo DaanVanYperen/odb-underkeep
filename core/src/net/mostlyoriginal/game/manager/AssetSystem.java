@@ -23,28 +23,39 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
     public AssetSystem() {
         super();
 
-        // @todo GAME SPECIFIC, split into library and game specific logic.
+        add("background", 0, 340, 284, 160,1);
+        add("hills", 0, 502, 284, 10,1);
 
-        add("player-idle", 144, 48, 32, 16, 2);
-        add("player-prepare-leap", 144, 16, 32, 32, 1);
-        add("player-leap", 144+32, 16, 32, 32, 1);
-        add("player-roll", 144, 68, 32, 20, 4,1,tileset,0.1f);
-        add("player-nibble", 144, 92, 32, 20, 1);
-        add("player-pluck", 272, 16, 32, 24, 2,1,tileset,0.4f);
-        add("player-plucked", 240, 68, 32, 20, 1);
+        add("lift-frame", 0, 0, 23, 25,1);
+        add("lift-cage", 23, 4, 17, 21,1);
 
-        add("chicklet-stuck", 192, 112,  16, 16, 1);
-        add("chicklet-waddle", 192+16, 112, 16, 16, 2);
-        add("chicklet-idle", 192+32, 112,   16, 16, 1);
+        add("queen", 0, 34, 13, 17,1);
+        add("knight", 13, 34, 13, 17, 1);
+        add("spelunker", 26, 34, 13, 17,1);
+        add("mage", 39, 32, 13, 19,1);
 
-        add("turnip-stuck", 144, 144,  16, 16, 1);
-        add("turnip-idle", 144+16, 144, 16, 16, 1);
+        add("marker-monster", 66, 4, 11, 10,1);
+        add("marker-gem", 79, 5,  9, 8,1);
+        add("marker-gold", 92, 6, 10, 7,1);
+        add("marker-dungeon", 67, 16, 9, 9,1);
+        add("marker-portal", 79, 16, 10, 10,1);
 
-        add("slumberer-idle", 239, 112, 33, 47, 1);
-        add("slumberer-eye", 272, 105, 16, 15, 3,1,tileset,1/10f);
-        add("slumberer-eyelid", 272, 136, 12, 11, 4,1,tileset,0.1f);
+        add("bird", 111, 6, 5, 3,2);
+        add("cloud", 108, 11, 13, 7,2);
 
-        add("particle-sweat", 144, 128, 8, 8, 2, 1, tileset, 1f);
+        add("building-hammmer", 0,51, 13, 17,1);
+        add("building-flag", 26,51, 13, 17,2);
+        add("building-barracks", 0,68, 13, 17,1);
+        add("building-wall",13,68, 13, 17,3);
+        add("building-tower", 52,68, 13, 17,1);
+        add("building-trimming-on-tower",0,85, 13, 17,1);
+        add("building-trimming-on-wall-left",13,85, 13, 17,1);
+        add("building-trimming-on-wall",26,85, 13, 17,1);
+        add("building-trimming-on-wall-right",39,85, 13, 17,1);
+        add("building-trimming-top-wall-left",13,102, 13, 17,1);
+        add("building-trimming-top-wall-right",39,102, 13, 17,1);
+        add("building-trimming-bottom-wall-left",13,119, 13, 17,1);
+        add("building-trimming-bottom-wall-right",39,119, 13, 17,1);
 
         loadSounds(new String[] {
         });

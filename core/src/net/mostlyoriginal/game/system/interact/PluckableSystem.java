@@ -101,8 +101,8 @@ public class PluckableSystem extends EntityProcessingSystem {
                     sweatDropletCooldown = 999f;
                     Pos pos = om.get(player.get());
                     Bounds bounds = bm.get(player.get());
-                    for (int i=0; i<3; i++)
-                    entityFactorySystem.createSweat((int)(pos.x + bounds.maxx * (playerAnim.flippedX ? 0.8f : 0.2f )), (int)(pos.y + bounds.cy()),"particle-sweat").addToWorld();
+                    //for (int i=0; i<3; i++)
+                    //entityFactorySystem.createSweat((int)(pos.x + bounds.maxx * (playerAnim.flippedX ? 0.8f : 0.2f )), (int)(pos.y + bounds.cy()),"particle-sweat").addToWorld();
                 }
 
                 // pluckkkkkk
