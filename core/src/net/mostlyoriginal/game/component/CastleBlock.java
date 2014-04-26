@@ -17,7 +17,8 @@ public class CastleBlock extends Component {
         EMPTY(SubType.NONE),
         TOWER(SubType.TOWER),
         WALL(SubType.WALL),
-        BARRACKS(SubType.WALL);
+        BARRACKS(SubType.WALL),
+        SPELUNKER(SubType.WALL);
 
         public final SubType subType;
 

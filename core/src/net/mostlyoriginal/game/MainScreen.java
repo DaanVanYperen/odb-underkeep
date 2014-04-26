@@ -60,6 +60,8 @@ public class MainScreen implements Screen {
         world.setSystem(new QuestSystem());
         world.setSystem(new QuesteeWorkSystem());
 
+        world.setSystem(new ExpansionBuySystem());
+        world.setSystem(new ExpansionPointSystem());
         world.setSystem(new CastleSystem());
 
         /** SIMULATE */

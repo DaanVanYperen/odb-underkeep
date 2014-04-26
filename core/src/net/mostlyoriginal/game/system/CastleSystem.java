@@ -4,8 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.artemis.utils.ImmutableBag;
 import net.mostlyoriginal.game.component.CastleBlock;
+import net.mostlyoriginal.game.component.ExpansionPoint;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
 
 /**
@@ -53,27 +53,56 @@ public class CastleSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-
-    }
-
-    protected void demolishCastle()
-    {
-        ImmutableBag<Entity> actives = getActives();
-        for ( Entity active : actives )
-        {
-            if ( active != null && active.isActive() )
-                active.deleteFromWorld();
-        }
+        if ( castleDirty)
+            e.deleteFromWorld();
     }
 
     protected void assembleCastle()
     {
-        demolishCastle();
         spawnCoreBlocks();
         spawnTrimming();
+        spawnExpansionPoints();
     }
 
     private void spawnTrimming() {
+
+        // spawn trimming
+        for ( int x=-1;x<=W;x++)
+        {
+            int px = 13 + x * 13;
+
+            for (int y=-1;y<=H;y++) {
+                int py = 30 + y * 17;
+
+                // only spawn trimming on empty blocks.
+                if ( isEmptyAt(x,y) || isTowerAt(x,y))
+                {
+                    // top wall trimming.
+                    if ( isWallAt(x, y-1) ) entityFactorySystem.createEntity("building-trimming-on-wall", px, py).addToWorld();
+                    else if ( isWallAt(x+1, y-1) && !isWallAt(x+1, y) ) entityFactorySystem.createEntity("building-trimming-on-wall-left", px, py).addToWorld();
+                    else if ( isWallAt(x-1, y-1) && !isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-on-wall-right", px, py).addToWorld();
+
+                    // side wall trimming left side
+                    if ( isWallAt(x+1, y) && isWallAt(x+1, y+1) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-left", px, py).addToWorld();
+                    else if ( isWallAt(x+1, y) ) entityFactorySystem.createEntity("building-trimming-top-wall-left", px, py).addToWorld();
+
+                    // side wall trimming right side.
+                    if ( isWallAt(x-1, y) && isWallAt(x-1, y+1) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-right", px, py).addToWorld();
+                    else if ( isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-top-wall-right", px, py).addToWorld();
+
+                    // tower top.
+                    if ( isTowerAt(x, y-1) && !isTowerAt(x,y) ) entityFactorySystem.createEntity("building-trimming-on-tower", px, py).addToWorld();
+
+                    if ( (isWallAt(x, y-1) && !isWallAt(x, y)) || (isTowerAt(x,y-2) && !isTowerAt(x,y-1)))
+                    {
+                        entityFactorySystem.createEntity("building-flag", px, py).addToWorld();
+                    }
+                }
+            }
+        }
+    }
+
+    private void spawnExpansionPoints() {
 
         // spawn trimming
         for ( int x=0;x<W;x++)
@@ -86,31 +115,27 @@ public class CastleSystem extends EntityProcessingSystem {
                 // only spawn trimming on empty blocks.
                 if ( castle[y][x] == CastleBlock.Type.EMPTY || castle[y][x] == CastleBlock.Type.TOWER)
                 {
-                    // top wall trimming.
-                    if ( isWallAt(x, y-1) ) entityFactorySystem.createEntity("building-trimming-on-wall", px, py).addToWorld();
-                    else if ( isWallAt(x+1, y-1) ) entityFactorySystem.createEntity("building-trimming-on-wall-left", px, py).addToWorld();
-                    else if ( isWallAt(x-1, y-1) ) entityFactorySystem.createEntity("building-trimming-on-wall-right", px, py).addToWorld();
-
-                    // side wall trimming left side
-                    if ( isWallAt(x+1, y) && isWallAt(x+1, y+1) ) entityFactorySystem.createEntity("building-trimming-top-wall-left", px, py).addToWorld();
-                    else if ( isWallAt(x+1, y) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-left", px, py).addToWorld();
-
-                    // side wall trimming right side.
-                    if ( isWallAt(x-1, y) && isWallAt(x-1, y+1) ) entityFactorySystem.createEntity("building-trimming-top-wall-right", px, py).addToWorld();
-                    else if ( isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-right", px, py).addToWorld();
-
-                    // tower top.
-                    if ( isTowerAt(x, y-1) && !isTowerAt(x,y) ) entityFactorySystem.createEntity("building-trimming-on-tower", px, py).addToWorld();
-
-                    if ( (isWallAt(x, y-1) || isTowerAt(x,y-2)) && !isTowerAt(x,y-1))
+                    if ( castle[y][x] == CastleBlock.Type.EMPTY )
                     {
-                        entityFactorySystem.createEntity("building-flag", px, py).addToWorld();
+                        boolean supportForWall  = y == 0 || isWallAt(x, y-1);
+                        boolean supportForTower = y == 0 || isWallAt(x, y-1) || isTowerAt(x, y-1);
+
+                        if ( supportForTower || supportForWall )
+                        {
+                            Entity e = entityFactorySystem.createEntity("building-hammer", px, py);
+                            ExpansionPoint point = e.getComponent(ExpansionPoint.class);
+                            point.x = x;
+                            point.y = y;
+                            point.allowWalls = supportForWall;
+                            point.allowTowers = supportForTower;
+
+                            e.addToWorld();
+                        }
                     }
                 }
             }
         }
     }
-
     private boolean isWallAt(int x, int y) {
         if ( x<0 || y<0 || x>=W || y>=H ) return false;
         return (castle[y][x].subType == CastleBlock.SubType.WALL);
@@ -119,6 +144,11 @@ public class CastleSystem extends EntityProcessingSystem {
     private boolean isTowerAt(int x, int y) {
         if ( x<0 || y<0 || x>=W || y>=H ) return false;
         return (castle[y][x].subType == CastleBlock.SubType.TOWER);
+    }
+
+    private boolean isEmptyAt(int x, int y) {
+        if ( x<0 || y<0 || x>=W || y>=H ) return true;
+        return (castle[y][x].subType == CastleBlock.SubType.NONE);
     }
 
     private void spawnCoreBlocks() {
@@ -139,11 +169,20 @@ public class CastleSystem extends EntityProcessingSystem {
                     case BARRACKS:
                         entityFactorySystem.createEntity("building-barracks", px, py).addToWorld();
                         break;
+                    case SPELUNKER:
+                        entityFactorySystem.createEntity("building-spelunker", px, py).addToWorld();
+                        break;
                     case TOWER:
                         entityFactorySystem.createEntity("building-tower", px, py).addToWorld();
                         break;
                 }
             }
         }
+    }
+
+    public void setBlock(int x, int y, CastleBlock.Type type) {
+        if ( x<0 || y<0 || x>=W || y>=H ) return;
+        castleDirty=true;
+        castle[y][x] = type;
     }
 }

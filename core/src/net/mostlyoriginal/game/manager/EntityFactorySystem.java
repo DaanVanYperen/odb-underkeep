@@ -15,9 +15,7 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.manager.AbstractEntityFactorySystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.CastleBlock;
-import net.mostlyoriginal.game.component.Quest;
-import net.mostlyoriginal.game.component.Questee;
+import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.component.agent.Clickable;
 import net.mostlyoriginal.game.component.agent.Focusable;
 
@@ -62,6 +60,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "building-tower":
             case "building-wall":
             case "building-barracks":
+            case "building-spelunker":
                     return createBlock(entity, cx, cy);
             case "building-flag":
             case "building-trimming-on-tower":
@@ -73,10 +72,29 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "building-trimming-bottom-wall-left":
             case "building-trimming-bottom-wall-right":
                 return createTrimming(entity,cx,cy);
+            case "expand-knight":
+                return createExpansionOption(cx, cy,"knight",CastleBlock.Type.BARRACKS);
+            case "expand-mage":
+                return createExpansionOption(cx, cy,"mage",CastleBlock.Type.TOWER);
+            case "expand-spelunker":
+                return createExpansionOption(cx, cy,"spelunker",CastleBlock.Type.SPELUNKER);
+            case "expand-wall":
+                return createExpansionOption(cx, cy,"building-wall",CastleBlock.Type.WALL);
+            case "building-hammer":
+                return createExpansionPoint(entity,cx,cy);
 
             /** @todo Add your entities here */
             default: throw new RuntimeException("No idea how to spawn " + entity);
         }
+    }
+
+    private Entity createExpansionOption(int cx, int cy, String animId, CastleBlock.Type type) {
+        return world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Bounds(17,13))
+                .addComponent(new Clickable())
+                .addComponent(new ExpansionOption(type))
+                .addComponent(new Anim(animId, 11));
     }
 
     private Entity createTrimming(String entity, int cx, int cy) {
@@ -85,6 +103,17 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Bounds(17,13))
                 .addComponent(new CastleBlock())
                 .addComponent(new Anim(entity, -5));
+    }
+
+    private Entity createExpansionPoint(String entity, int cx, int cy) {
+        return world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Bounds(17,13))
+                .addComponent(new CastleBlock())
+                .addComponent(new Clickable())
+                .addComponent(new Focusable())
+                .addComponent(new ExpansionPoint())
+                .addComponent(new Anim(entity, 10));
     }
 
     private Entity createBlock(String entity, int cx, int cy) {
@@ -131,7 +160,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     private Entity createMouse() {
         Entity mouse = world.createEntity()
                 .addComponent(new Pos())
-                .addComponent(new Bounds(-2, -2, 2, 2))
+                .addComponent(new Bounds(1,1))
                 .addComponent(new MouseCursor());
         tagManager.register("mouse", mouse);
         return mouse;

@@ -47,6 +47,7 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
 
         add("building-hammer", 0,51, 13, 17,1);
         add("building-flag", 26,51, 13, 17,2);
+        add("building-spelunker", 65,68, 13, 17,1);
         add("building-barracks", 0,68, 13, 17,1);
         add("building-wall",13,68, 13, 17,3);
         add("building-tower", 52,68, 13, 17,1);
