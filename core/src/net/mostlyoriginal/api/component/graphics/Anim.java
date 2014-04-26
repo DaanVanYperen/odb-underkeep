@@ -32,6 +32,7 @@ public class Anim extends Component {
     public float age = 0;
     /** Loop animation when the end has been reached. */
     public boolean loop = true;
+    public boolean visible = true;
 
     /** Animation identifier. */
     /** write asset resolver */

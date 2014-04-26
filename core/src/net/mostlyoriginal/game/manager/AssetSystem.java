@@ -33,6 +33,7 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("knight", 13, 34, 13, 17, 1);
         add("spelunker", 26, 34, 13, 17,1);
         add("mage", 39, 32, 13, 19,1);
+        add("indicator", 13,51, 13, 17,1);
 
         add("marker-monster", 66, 4, 11, 10,1);
         add("marker-gem", 79, 5,  9, 8,1);
@@ -43,7 +44,7 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("bird", 111, 6, 5, 3,2);
         add("cloud", 108, 11, 13, 7,2);
 
-        add("building-hammmer", 0,51, 13, 17,1);
+        add("building-hammer", 0,51, 13, 17,1);
         add("building-flag", 26,51, 13, 17,2);
         add("building-barracks", 0,68, 13, 17,1);
         add("building-wall",13,68, 13, 17,3);

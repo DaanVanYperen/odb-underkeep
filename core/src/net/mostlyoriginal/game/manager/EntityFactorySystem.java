@@ -6,13 +6,16 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
+import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
+import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Clamped;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.manager.AbstractEntityFactorySystem;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.component.agent.Selectable;
 
 /**
  * Game specific entity factory.
@@ -29,6 +32,9 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     public Entity createEntity(String entity, int cx, int cy) {
         return createEntity(entity,cx,cy, null);
     }
+    public Entity createEntity(String entity) {
+        return createEntity(entity,0,0, null);
+    }
 
     @Override
     public Entity createEntity(String entity, int cx, int cy, MapProperties properties) {
@@ -36,21 +42,66 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "background" : return createBackground();
             case "hills" : return createHills(cx, cy);
             case "cloud" : return createCloud(cx, cy);
+            case "lift" : return createElevator(cx, cy);
+            case "queen" : return createAgent(cx, cy, "queen");
+            case "knight" : return createAgent(cx, cy, "knight");
+            case "mage" : return createAgent(cx, cy, "mage");
+            case "spelunker" : return createAgent(cx, cy, "spelunker");
+            case "indicator" : return createIndicator(cx, cy);
+            case "mouse" : return createMouse();
             /** @todo Add your entities here */
             default: throw new RuntimeException("No idea how to spawn " + entity);
         }
     }
 
+    private Entity createMouse() {
+        Entity mouse = world.createEntity()
+                .addComponent(new Pos())
+                .addComponent(new Bounds(-2, -2, 2, 2))
+                .addComponent(new MouseCursor());
+        tagManager.register("mouse", mouse);
+        return mouse;
+    }
+
+    private Entity createIndicator(int cx, int cy) {
+        Anim anim = new Anim("indicator");
+        anim.visible=false;
+        Entity indicator = world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(anim);
+        tagManager.register("indicator",indicator);
+        return indicator;
+    }
+
+    private Entity createAgent(int cx, int cy, String type) {
+
+        Entity entity = world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Bounds(17,13))
+                .addComponent(new Selectable());
+
+        switch(type)
+        {
+            case "queen": entity.addComponent(new Anim("queen")); break;
+            case "knight": entity.addComponent(new Anim("knight")); break;
+            case "mage": entity.addComponent(new Anim("mage")); break;
+            case "spelunker": entity.addComponent(new Anim("spelunker")); break;
+            default: throw new RuntimeException("unknown agent type " + type);
+        }
+
+        return entity;
+    }
+
     private Entity createCloud(int cx, int cy) {
         Physics physics = new Physics();
         physics.friction=0;
-        physics.vx=MathUtils.random(0.5f,4f);
+        physics.vx=MathUtils.random(0.2f,2f);
 
         // clamp with wrap so clouds can swoop around
         Clamped clamped = new Clamped(-40, 0, Gdx.graphics.getWidth() / G.CAMERA_ZOOM_FACTOR +10, Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR);
         clamped.wrap = true;
         Anim anim = staticRandomizedAnim("cloud");
-        anim.scale=MathUtils.random(1f,6f);
+        anim.scale=MathUtils.random(1f,4f);
         anim.color.a= 0.1f + (MathUtils.random(0.1f, 0.2f) * (1f/anim.scale));
         anim.layer = -98;
         return world.createEntity()
@@ -58,6 +109,16 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(anim)
                 .addComponent(physics)
                 .addComponent(clamped);
+    }
+
+    private Entity createElevator(int cx, int cy) {
+        world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Anim("lift-frame", -80)).addToWorld();
+        Entity cage = world.createEntity()
+                .addComponent(new Pos(cx+3, cy))
+                .addComponent(new Anim("lift-cage", -79));
+        return cage;
     }
 
     private Anim staticRandomizedAnim(String animId) {
@@ -80,6 +141,12 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         super.initialize();
         createEntity("background",0,0).addToWorld();
         createEntity("hills",0,26).addToWorld();
+        createEntity("lift",211,30).addToWorld();
+
+        createEntity("queen",5, 5).addToWorld();
+        createEntity("knight",25,5).addToWorld();
+        createEntity("mage",45,5).addToWorld();
+        createEntity("spelunker",65,5).addToWorld();
 
         for ( int i=0; i<20; i++)
         {
@@ -87,5 +154,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                     (int)MathUtils.random(-40,Gdx.graphics.getWidth() / G.CAMERA_ZOOM_FACTOR+10),
                     (int)MathUtils.random((Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR) * 0.4f,(Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR)* 0.9f)).addToWorld();
         }
+
+        createEntity("indicator").addToWorld();
+        createEntity("mouse").addToWorld();
     }
 }

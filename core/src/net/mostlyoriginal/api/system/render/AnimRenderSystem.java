@@ -97,8 +97,11 @@ public class AnimRenderSystem extends EntitySystem {
 
         anim.age += world.delta * anim.speed;
 
-        batch.setColor( anim.color );
-        drawAnimation(anim, angle, pos, anim.id);
+        if ( anim.visible )
+        {
+            batch.setColor( anim.color );
+            drawAnimation(anim, angle, pos, anim.id);
+        }
     }
 
     private void drawAnimation(final Anim animation, final Angle angle, final Pos position, String id) {

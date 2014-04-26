@@ -19,6 +19,7 @@ import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
+import net.mostlyoriginal.game.system.agent.SelectableSystem;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 
 /**
@@ -47,6 +48,7 @@ public class MainScreen implements Screen {
         /** CONTROL */
 
         /** Agency Systems (Control and Interact) */
+        world.setSystem(new SelectableSystem());
 
         /** Acting Systems (Control and Interact) */
         world.setSystem(new PluckableSystem());
