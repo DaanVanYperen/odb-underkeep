@@ -19,7 +19,7 @@ import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
-import net.mostlyoriginal.game.system.agent.SelectableSystem;
+import net.mostlyoriginal.game.system.agent.*;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 
 /**
@@ -48,12 +48,16 @@ public class MainScreen implements Screen {
         /** CONTROL */
 
         /** Agency Systems (Control and Interact) */
-        world.setSystem(new SelectableSystem());
+        world.setSystem(new ClickableSystem());
+        world.setSystem(new FocusableSystem());
 
         /** Acting Systems (Control and Interact) */
         world.setSystem(new PluckableSystem());
         world.setSystem(new SchedulerSystem());
         world.setSystem(new EntitySpawnerSystem());
+
+        world.setSystem(new QuestSystem());
+        world.setSystem(new QuesteeWorkSystem());
 
         /** SIMULATE */
 
@@ -66,6 +70,7 @@ public class MainScreen implements Screen {
         world.setSystem(new AttachmentSystem());
         world.setSystem(new InbetweenSystem());
         world.setSystem(new MouseCursorSystem());
+        world.setSystem(new QuesteePositioningSystem());
         /** apply velocity */
         world.setSystem(new PhysicsSystem());
 

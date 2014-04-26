@@ -15,7 +15,10 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.manager.AbstractEntityFactorySystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.agent.Selectable;
+import net.mostlyoriginal.game.component.Quest;
+import net.mostlyoriginal.game.component.Questee;
+import net.mostlyoriginal.game.component.agent.Clickable;
+import net.mostlyoriginal.game.component.agent.Focusable;
 
 /**
  * Game specific entity factory.
@@ -42,6 +45,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "background" : return createBackground();
             case "hills" : return createHills(cx, cy);
             case "cloud" : return createCloud(cx, cy);
+            case "radar" : return createRadar(cx, cy);
             case "lift" : return createElevator(cx, cy);
             case "queen" : return createAgent(cx, cy, "queen");
             case "knight" : return createAgent(cx, cy, "knight");
@@ -49,9 +53,29 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "spelunker" : return createAgent(cx, cy, "spelunker");
             case "indicator" : return createIndicator(cx, cy);
             case "mouse" : return createMouse();
+            case "marker-monster":
+            case "marker-gem":
+            case "marker-gold":
+            case "marker-dungeon":
+            case "marker-portal": return createQuest(entity,cx,cy);
             /** @todo Add your entities here */
             default: throw new RuntimeException("No idea how to spawn " + entity);
         }
+    }
+
+    private Entity createQuest(String entity, int cx, int cy) {
+        return world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Bounds(10,10))
+                .addComponent(new Clickable())
+                .addComponent(new Quest(entity))
+                .addComponent(new Anim(entity, 51));
+    }
+
+    private Entity createRadar(int cx, int cy) {
+        return world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(new Anim("radar", 50));
     }
 
     private Entity createMouse() {
@@ -78,7 +102,9 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         Entity entity = world.createEntity()
                 .addComponent(new Pos(cx, cy))
                 .addComponent(new Bounds(17,13))
-                .addComponent(new Selectable());
+                .addComponent(new Clickable())
+                .addComponent(new Questee())
+                .addComponent(new Focusable());
 
         switch(type)
         {
@@ -157,5 +183,12 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         createEntity("indicator").addToWorld();
         createEntity("mouse").addToWorld();
+        createEntity("radar",240,26).addToWorld();
+
+        createEntity("marker-monster", 245, 30).addToWorld();
+        createEntity("marker-gem", 245, 40).addToWorld();
+        createEntity("marker-gold", 245, 50).addToWorld();
+        createEntity("marker-dungeon", 245, 60).addToWorld();
+        createEntity("marker-portal", 245, 70).addToWorld();
     }
 }

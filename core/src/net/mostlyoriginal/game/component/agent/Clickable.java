@@ -5,6 +5,6 @@ import com.artemis.Component;
 /**
  * @author Daan van Yperen
  */
-public class Selectable extends Component {
-    public boolean selected;
+public class Clickable extends Component {
+    public boolean clicked;
 }
