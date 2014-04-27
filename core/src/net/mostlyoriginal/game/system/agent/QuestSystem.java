@@ -73,7 +73,7 @@ public class QuestSystem extends EntityProcessingSystem {
             if (quest.monsterSpawnCooldown <= 0) {
                 quest.monsterSpawnCooldown = MathUtils.random(quest.monsterSpawnDelayMin, quest.monsterSpawnDelayMax);
                 Pos pos = pm.get(e);
-                entityFactorySystem.createEntity("marker-monster", (int) (pos.x + 7), (int) (pos.y + 7)).addToWorld();
+                entityFactorySystem.createEntity("marker-monster", (int) (pos.x), (int) (pos.y + 7)).addToWorld();
             }
         }
     }
