@@ -409,6 +409,11 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         for ( int i=0; i<20; i++)
         {
+            createEntity("marker-monster", RADAR_X, RADAR_Y +95-i).addToWorld();
+        }
+
+        for ( int i=0; i<20; i++)
+        {
             createEntity("cloud",
                     (int)MathUtils.random(-40,Gdx.graphics.getWidth() / G.CAMERA_ZOOM_FACTOR+10),
                     (int)MathUtils.random((Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR) * 0.4f,(Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR)* 0.9f)).addToWorld();

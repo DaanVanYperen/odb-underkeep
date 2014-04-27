@@ -23,10 +23,14 @@ public class DirectorSystem  extends VoidEntitySystem {
     public float dungeonInterval = 25;
     public float portalInterval = 60;
 
+    public boolean gameOver =false;
+
     private EntityFactorySystem entityFactory;
 
     @Override
     protected void processSystem() {
+
+        if ( gameOver ) return;
 
         dungeonCooldown -= world.delta;
         if (dungeonCooldown <= 0)
@@ -58,5 +62,9 @@ public class DirectorSystem  extends VoidEntitySystem {
 
     private int randomRadarX() {
         return entityFactory.RADAR_X + 4 + MathUtils.random(23);
+    }
+
+    public void gameOver() {
+        gameOver =true;
     }
 }

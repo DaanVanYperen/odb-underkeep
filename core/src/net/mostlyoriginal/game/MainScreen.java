@@ -32,7 +32,7 @@ public class MainScreen implements Screen {
 
     private final World world;
 
-    public MainScreen() {
+    public MainScreen( MyGame game) {
 
         world = new World();
 
@@ -70,6 +70,7 @@ public class MainScreen implements Screen {
         world.setSystem(new ExpansionBuySystem());
         world.setSystem(new ExpansionPointSystem());
         world.setSystem(new CastleSystem());
+        world.setSystem(new BestCastleSystem(game));
 
         world.setSystem(new IncapacitateSystem());
         world.setSystem(new CastleLevelSystem());

@@ -8,11 +8,11 @@ import com.artemis.managers.TagManager;
 import com.artemis.systems.EntityProcessingSystem;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
-import net.mostlyoriginal.game.component.Cost;
 import net.mostlyoriginal.game.component.ExpansionOption;
 import net.mostlyoriginal.game.component.ExpansionPoint;
 import net.mostlyoriginal.game.component.agent.Clickable;
 import net.mostlyoriginal.game.system.CastleSystem;
+import net.mostlyoriginal.game.system.DirectorSystem;
 import net.mostlyoriginal.game.system.UIWalletSystem;
 
 /**
@@ -32,6 +32,7 @@ public class ExpansionBuySystem extends EntityProcessingSystem {
     UIWalletSystem uiWalletSystem;
     private Entity lastFocus;
     public Entity focus;
+    private DirectorSystem directorSystem;
 
 
     public ExpansionBuySystem() {
@@ -50,6 +51,14 @@ public class ExpansionBuySystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
+
+        if ( directorSystem.gameOver )
+        {
+            // disable after  game over.
+            e.deleteFromWorld();
+        }
+
+
     }
 
 }

@@ -17,6 +17,7 @@ import net.mostlyoriginal.game.component.Questee;
 import net.mostlyoriginal.game.component.agent.Clickable;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
+import net.mostlyoriginal.game.system.DirectorSystem;
 import net.mostlyoriginal.game.system.UIWalletSystem;
 
 /**
@@ -38,6 +39,7 @@ public class QuestSystem extends EntityProcessingSystem {
 
     UIWalletSystem uiWalletSystem;
     private AssetSystem assetSystem;
+    private DirectorSystem directorSystem;
 
     public QuestSystem() {
         super(Aspect.getAspectForAll(Clickable.class, Pos.class, Quest.class, Bounds.class));
@@ -45,6 +47,12 @@ public class QuestSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
+
+        if ( directorSystem.gameOver )
+        {
+            e.deleteFromWorld();
+            return;
+        }
 
         if (cm.get(e).clicked && tagManager.isRegistered("focus")) {
             activateQuestFor(e, tagManager.getEntity("focus"));

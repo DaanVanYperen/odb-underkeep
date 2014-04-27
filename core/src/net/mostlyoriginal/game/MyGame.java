@@ -12,7 +12,7 @@ public class MyGame extends Game {
     }
 
     public void restart() {
-        setScreen(new MainScreen());
+        setScreen(new MainScreen(this));
     }
 
     public static MyGame getInstance()

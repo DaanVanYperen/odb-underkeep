@@ -31,6 +31,10 @@ public class CastleSystem extends EntityProcessingSystem {
     private static final int BIRD_SPAWN_LEVEL = 3;
     public static final int CASTLE_X_OFFSET = 50;
     public CastleBlock.Type castle[][] = new CastleBlock.Type[H][W];
+    public CastleBlock.Type bestCastle[][] = new CastleBlock.Type[H][W];
+
+    public int blockCount = 0;
+    public int bestBlockCount = 0;
 
     public int knightLevel = 0;
     public int mageLevel = 0;

@@ -14,6 +14,7 @@ import net.mostlyoriginal.game.component.Quest;
 import net.mostlyoriginal.game.component.Questee;
 import net.mostlyoriginal.game.component.agent.Clickable;
 import net.mostlyoriginal.game.component.agent.Focusable;
+import net.mostlyoriginal.game.system.DirectorSystem;
 import net.mostlyoriginal.game.system.IncapacitateSystem;
 
 /**
@@ -30,10 +31,12 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
     ComponentMapper<Incappable> dm;
     ComponentMapper<Quest> qum;
     ComponentMapper<Physics> pm;
+    ComponentMapper<Clickable> clm;
     TagManager tagManager;
     IncapacitateSystem incapacitateSystem;
 
     UuidEntityManager uuidEntityManager;
+    private DirectorSystem directorSystem;
 
     public QuesteeWorkSystem() {
         super(Aspect.getAspectForAll(Questee.class));
@@ -41,6 +44,15 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
+
+        if ( directorSystem.gameOver )
+        {
+            // disable after  game over.
+            if ( clm.has(e)) {
+                e.removeComponent(Clickable.class).changedInWorld();
+            }
+            return;
+        }
 
         Questee questee = qm.get(e);
         if ( questee.quest != null )
