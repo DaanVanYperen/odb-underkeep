@@ -18,6 +18,7 @@ import net.mostlyoriginal.game.component.Questee;
 @Wire
 public class QuesteePositioningSystem extends EntityProcessingSystem {
 
+    public static final int OFFSET_X = 45;
     ComponentMapper<Questee> qm;
     ComponentMapper<Pos> pm;
     CameraSystem cameraSystem;
@@ -44,7 +45,7 @@ public class QuesteePositioningSystem extends EntityProcessingSystem {
             pos.x = cameraSystem.getPixelWidth() - 10 - 13 - 20 * countRight;
             countRight++;
         } else {
-            pos.x = 10 + 20 * countLeft;
+            pos.x = OFFSET_X + 20 * countLeft;
             countLeft++;
         }
 

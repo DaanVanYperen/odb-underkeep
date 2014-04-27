@@ -26,7 +26,9 @@ public class UIWalletSystem extends VoidEntitySystem {
         batch.begin();
         batch.setColor(1f, 1f, 1f, 1f);
         fontManager.font.setColor(1f,1f,1f,1f);
-        fontManager.font.draw(batch, treasure + "$", 2, cameraSystem.getPixelHeight() - 2);
+        String strTreasure = treasure + "$";
+        fontManager.font.draw(batch, strTreasure, cameraSystem.getPixelWidth() - 2 -
+                fontManager.font.getBounds(strTreasure).width, cameraSystem.getPixelHeight() - 2);
 
         batch.end();
     }

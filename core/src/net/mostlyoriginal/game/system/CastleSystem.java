@@ -25,14 +25,14 @@ import net.mostlyoriginal.game.manager.EntityFactorySystem;
 public class CastleSystem extends EntityProcessingSystem {
 
     public static final int H = 6;
-    public static final int W = 14;
+    public static final int W = 12;
     private static final int BIRD_SPAWN_LEVEL = 3;
+    public static final int CASTLE_X_OFFSET = 50;
     public CastleBlock.Type castle[][] = new CastleBlock.Type[H][W];
 
     public boolean castleDirty = true;
 
     EntityFactorySystem entityFactorySystem;
-    private int randomUsedX;
 
     ComponentMapper<CastleBlock> cm;
 
@@ -44,15 +44,7 @@ public class CastleSystem extends EntityProcessingSystem {
             }
         }
 
-        castle[0][4] = CastleBlock.Type.WALL;
-        castle[0][3] = CastleBlock.Type.BARRACKS;
-        castle[0][2] = CastleBlock.Type.WALL;
-        castle[1][3] = CastleBlock.Type.WALL;
-        castle[2][3] = CastleBlock.Type.TOWER;
-        castle[3][3] = CastleBlock.Type.TOWER;
-        castle[4][3] = CastleBlock.Type.TOWER;
-        castle[0][5] = CastleBlock.Type.TOWER;
-        castle[1][5] = CastleBlock.Type.TOWER;
+        castle[0][6] = CastleBlock.Type.WALL;
     }
 
     @Override
@@ -89,7 +81,7 @@ public class CastleSystem extends EntityProcessingSystem {
         // spawn trimming
         for ( int x=-1;x<=W;x++)
         {
-            int px = 13 + x * 13;
+            int px = CASTLE_X_OFFSET + x * 13;
 
             for (int y=-1;y<=H;y++) {
                 int py = 30 + y * 17;
@@ -143,7 +135,7 @@ public class CastleSystem extends EntityProcessingSystem {
         // spawn trimming
         for ( int x=0;x<W;x++)
         {
-            int px = 13 + x * 13;
+            int px = CASTLE_X_OFFSET + x * 13;
 
             for (int y=0;y<H;y++) {
                 int py = 30 + y * 17;
@@ -191,7 +183,7 @@ public class CastleSystem extends EntityProcessingSystem {
         // spawn core blocks.
         for ( int x=0;x<W;x++)
         {
-            int px = 13 + x * 13;
+            int px = CASTLE_X_OFFSET + x * 13;
 
             for (int y=0;y<H;y++) {
                 int py = 30 + y * 17;
@@ -245,7 +237,7 @@ public class CastleSystem extends EntityProcessingSystem {
 
         // fling bricks everywhere!
         for ( int i=0,s= MathUtils.random(4,6); i<s;i++) {
-            int px = 13 + x * 13 + MathUtils.random(0,13);
+            int px = CASTLE_X_OFFSET + x * 13 + MathUtils.random(0, 13);
             int py = 30 + y * 17 + MathUtils.random(0,17);
             entityFactorySystem.createEntity("particle-debris", px, py).addToWorld();
         }
@@ -290,7 +282,7 @@ public class CastleSystem extends EntityProcessingSystem {
         {
             if ( castle[0][x] != CastleBlock.Type.EMPTY )
             {
-                usedX.add(13 + x * 13 + MathUtils.random(0,13));
+                usedX.add(CASTLE_X_OFFSET + x * 13 + MathUtils.random(0, 13));
             }
         }
         Integer result = usedX.random();

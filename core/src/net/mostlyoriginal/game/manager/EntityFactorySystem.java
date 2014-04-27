@@ -35,6 +35,9 @@ import net.mostlyoriginal.game.component.agent.Focusable;
 @Wire
 public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
+    public static final int RADAR_X = 5;
+    public static final int RADAR_Y = 26;
+    public static final int SERVANT_Y = 10;
     private TagManager tagManager;
     private AbstractAssetSystem abstractAssetSystem;
     private CameraSystem cameraSystem;
@@ -347,10 +350,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("hills",0,0).addToWorld();
         createEntity("lift",211,30).addToWorld();
 
-        createEntity("queen",5, 5).addToWorld();
-        createEntity("knight",25,5).addToWorld();
-        createEntity("mage",45,5).addToWorld();
-        createEntity("spelunker",65,5).addToWorld();
+        createEntity("queen",5, SERVANT_Y).addToWorld();
+        createEntity("knight",25,SERVANT_Y).addToWorld();
+        createEntity("mage",45,SERVANT_Y).addToWorld();
+        createEntity("spelunker",65,SERVANT_Y).addToWorld();
 
         for ( int i=0; i<20; i++)
         {
@@ -361,18 +364,18 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         createEntity("indicator").addToWorld();
         createEntity("mouse").addToWorld();
-        createEntity("radar",240,26).addToWorld();
+        createEntity("radar", RADAR_X, RADAR_Y).addToWorld();
 
         //createEntity("marker-gem", 245, 40).addToWorld();
 //        createEntity("marker-gold", 245, 50).addToWorld();
-        createEntity("marker-dungeon", 250, 100).addToWorld();
-        createEntity("marker-dungeon", 245, 60).addToWorld();
-        createEntity("marker-portal", 245, 70).addToWorld();
-        createEntity("marker-portal", 255, 100).addToWorld();
+        createEntity("marker-dungeon",RADAR_X+10, RADAR_Y+75).addToWorld();
+        createEntity("marker-dungeon",RADAR_X+5, RADAR_Y+30).addToWorld();
+        createEntity("marker-portal", RADAR_X+5, RADAR_Y+50).addToWorld();
+        createEntity("marker-portal", RADAR_X+10, RADAR_Y+75).addToWorld();
 
 
         int tmpY = (int)(cameraSystem.getPixelHeight() - 18);
-        int tmpX = 60;
+        int tmpX = 120;
         int stepSize = 14;
         createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8)).addToWorld();
         createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25)).addToWorld();
