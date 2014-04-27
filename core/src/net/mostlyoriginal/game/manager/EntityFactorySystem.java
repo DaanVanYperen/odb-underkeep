@@ -451,8 +451,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         int stepSize = 14;
         createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8)).addToWorld();
         createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25)).addToWorld();
-        createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(50)).addToWorld();
-        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(50)).addToWorld();
+        createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(40)).addToWorld();
+        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(80)).addToWorld();
 
     }
 }
