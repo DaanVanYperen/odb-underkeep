@@ -10,6 +10,8 @@ public class Quest extends Component {
 
     // seconds of work for a /single/ actor.
     public float workRemaining = 4;
+    public int gold=0;
+    public boolean dangerous=false;
 
     public Quest(String type) {
         this.type = type;

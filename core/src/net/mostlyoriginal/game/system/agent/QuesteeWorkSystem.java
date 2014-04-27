@@ -6,10 +6,12 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.artemis.systems.EntityProcessingSystem;
+import net.mostlyoriginal.game.component.Damage;
 import net.mostlyoriginal.game.component.Quest;
 import net.mostlyoriginal.game.component.Questee;
 import net.mostlyoriginal.game.component.agent.Clickable;
 import net.mostlyoriginal.game.component.agent.Focusable;
+import net.mostlyoriginal.game.system.DamageSystem;
 
 /**
  * Questee entities work towards assigned quests.
@@ -22,8 +24,10 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
     ComponentMapper<Clickable> cm;
     ComponentMapper<Focusable> fm;
     ComponentMapper<Questee> qm;
+    ComponentMapper<Damage> dm;
     ComponentMapper<Quest> qum;
     TagManager tagManager;
+    DamageSystem damageSystem;
 
     public QuesteeWorkSystem() {
         super(Aspect.getAspectForAll(Questee.class));
@@ -60,5 +64,12 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
 
     private void workOnQuest(Entity actor, Quest quest) {
         quest.workRemaining -= world.delta;
+        if ( quest.dangerous )
+        {
+            // create damage effect in the last second.
+            if ( quest.workRemaining <= 1 ) {
+                damageSystem.makeDamaged(actor);
+            }
+        }
     }
 }

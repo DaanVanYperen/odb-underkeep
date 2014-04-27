@@ -43,4 +43,8 @@ public class UIWalletSystem extends VoidEntitySystem {
     public boolean canAfford(int cost) {
         return cost <= treasure;
     }
+
+    public void add(int gold) {
+        treasure += gold;
+    }
 }

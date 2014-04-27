@@ -20,10 +20,7 @@ import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.manager.FontManager;
-import net.mostlyoriginal.game.system.BobbingSystem;
-import net.mostlyoriginal.game.system.CastleSystem;
-import net.mostlyoriginal.game.system.UICostSystem;
-import net.mostlyoriginal.game.system.UIWalletSystem;
+import net.mostlyoriginal.game.system.*;
 import net.mostlyoriginal.game.system.agent.*;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 
@@ -70,6 +67,8 @@ public class MainScreen implements Screen {
         world.setSystem(new ExpansionBuySystem());
         world.setSystem(new ExpansionPointSystem());
         world.setSystem(new CastleSystem());
+
+        world.setSystem(new DamageSystem());
 
         /** SIMULATE */
 

@@ -214,15 +214,23 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         {
             case "marker-monster":
                 // monsters slowly ascend.
+                questComp.dangerous = true;
                 Physics physics = new Physics();
                 physics.vy= 1;
                 physics.friction=0;
                 questEntity.addComponent(physics).addComponent(new Erupt(cameraSystem.getPixelHeight() - 8));
-
+                break;
             case "marker-gem":
+                questComp.gold = 25;
             case "marker-gold":
+                questComp.gold = 10;
+                break;
             case "marker-dungeon":
+                questComp.dangerous = true;
+                break;
             case "marker-portal":
+                questComp.dangerous = true;
+                break;
         }
 
         return questEntity;
@@ -264,10 +272,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         switch(type)
         {
-            case "queen": entity.addComponent(new Anim("queen",11)); break;
-            case "knight": entity.addComponent(new Anim("knight",11)); break;
-            case "mage": entity.addComponent(new Anim("mage",11)); break;
-            case "spelunker": entity.addComponent(new Anim("spelunker",11)); break;
+            case "queen": entity.addComponent(new Damage("queen", "queen-hurt")).addComponent(new Anim("queen", 11)); break;
+            case "knight": entity.addComponent(new Damage("knight", "knight-hurt")).addComponent(new Anim("knight",11)); break;
+            case "mage": entity.addComponent(new Damage("mage", "mage-hurt")).addComponent(new Anim("mage",11)); break;
+            case "spelunker": entity.addComponent(new Damage("spelunker", "spelunker-hurt")).addComponent(new Anim("spelunker",11)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }
 
