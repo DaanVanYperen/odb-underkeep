@@ -53,21 +53,22 @@ public class UITitleSystem extends VoidEntitySystem {
         fontManager.fontMedium.setColor(1f, 1f, 1f, a);
         fontManager.fontLarge.setColor(1f, 1f, 1f, a);
 
-        fontManager.fontLarge.draw(batch, title, cameraSystem.getPixelWidth() / 2 -
+        float offsetX = cameraSystem.getPixelWidth() / 2 + 32;
+        fontManager.fontLarge.draw(batch, title, offsetX -
                 fontManager.fontLarge.getBounds(title).width / 2, cameraSystem.getPixelHeight() * 0.7f);
 
         if ( !sub1.equals("")) {
-            fontManager.fontMedium.draw(batch, sub1, cameraSystem.getPixelWidth() / 2 -
+            fontManager.fontMedium.draw(batch, sub1, offsetX -
                     fontManager.fontMedium.getBounds(sub1).width / 2, cameraSystem.getPixelHeight() * 0.7f - 20);
         }
 
         if ( !sub2.equals("")) {
-            fontManager.fontMedium.draw(batch, sub2, cameraSystem.getPixelWidth() / 2 -
+            fontManager.fontMedium.draw(batch, sub2, offsetX -
                     fontManager.fontMedium.getBounds(sub2).width / 2, cameraSystem.getPixelHeight() * 0.7f - 35);
         }
 
         if ( !sub3.equals("")) {
-            fontManager.font.draw(batch, sub3, cameraSystem.getPixelWidth() / 2 -
+            fontManager.font.draw(batch, sub3, offsetX -
                     fontManager.font.getBounds(sub3).width / 2, cameraSystem.getPixelHeight() * 0.7f - 50);
         }
 

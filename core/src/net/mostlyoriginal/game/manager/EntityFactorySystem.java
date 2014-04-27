@@ -429,7 +429,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         super.initialize();
         createEntity("background",0,0).addToWorld();
         createEntity("hills",0,0).addToWorld();
-        createEntity("lift",211,30).addToWorld();
+        createEntity("lift",251,30).addToWorld();
 
         createEntity("queen",0, SERVANT_Y).addToWorld();
 

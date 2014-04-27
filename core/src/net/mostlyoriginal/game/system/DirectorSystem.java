@@ -69,7 +69,7 @@ public class DirectorSystem  extends VoidEntitySystem {
     }
 
     private int randomRadarX() {
-        return entityFactory.RADAR_X + 3 + MathUtils.random(20);
+        return entityFactory.RADAR_X + 3 + MathUtils.random(55);
     }
 
     public void gameOver() {

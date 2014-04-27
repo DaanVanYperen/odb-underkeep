@@ -29,7 +29,7 @@ public class CastleSystem extends EntityProcessingSystem {
     public static final int H = 6;
     public static final int W = 12;
     private static final int BIRD_SPAWN_LEVEL = 3;
-    public static final int CASTLE_X_OFFSET = 50;
+    public static final int CASTLE_X_OFFSET = 85;
     public CastleBlock.Type castle[][] = new CastleBlock.Type[H][W];
     public CastleBlock.Type bestCastle[][] = new CastleBlock.Type[H][W];
 
