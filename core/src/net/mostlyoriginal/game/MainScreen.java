@@ -75,6 +75,7 @@ public class MainScreen implements Screen {
         world.setSystem(new IncapacitateSystem());
         world.setSystem(new CastleLevelSystem());
         world.setSystem(new QueenTaxSystem());
+        world.setSystem(new HintSystem());
 
         /** SIMULATE */
 
@@ -113,6 +114,7 @@ public class MainScreen implements Screen {
         world.setSystem(new UICostSystem());
         world.setSystem(new UILevelSystem());
         world.setSystem(new UITitleSystem());
+        world.setSystem(new UIHintSystem());
 
         world.setSystem(new DirectorSystem());
 

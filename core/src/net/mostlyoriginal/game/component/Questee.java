@@ -15,4 +15,5 @@ public class Questee extends Component {
     public UUID tracker;
     public float travelSpeed=1;
     public float workSpeed=1;
+    public String actionSfx;
 }

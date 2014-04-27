@@ -31,6 +31,8 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("lift-cage", 23, 4, 17, 21,1);
         add("lift-dot", 156, 13, 4, 4,1);
 
+        add("hint-bg", 130,68,10,10,1);
+
         add("particle-coin",96,21,4,4,1);
         add("particle-debris", 65, 85, 6, 5,2);
 
@@ -82,6 +84,9 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
                 "sfx_squeekytoy",
                 "sfx_stoneonstone",
                 "sfx_tape",
+                "sfx_foryou",
+                "sfx_hocuspocus",
+                "sfx_treasure"
         });
 
         playMusic("music");

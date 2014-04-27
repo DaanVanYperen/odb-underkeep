@@ -95,13 +95,17 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "building-trimming-bottom-wall-right":
                 return createTrimming(entity,cx,cy);
             case "expand-knight":
-                return createExpansionOption(cx, cy, "buy-knight", CastleBlock.Type.BARRACKS);
+                return createExpansionOption(cx, cy, "buy-knight", CastleBlock.Type.BARRACKS)
+                        .addComponent(new Hint("Barracks, extra knight."));
             case "expand-mage":
-                return createExpansionOption(cx, cy, "buy-mage", CastleBlock.Type.TOWER);
+                return createExpansionOption(cx, cy, "buy-mage", CastleBlock.Type.TOWER)
+                        .addComponent(new Hint("Mage tower, extra mage."));
             case "expand-spelunker":
-                return createExpansionOption(cx, cy, "buy-spelunker", CastleBlock.Type.SPELUNKER);
+                return createExpansionOption(cx, cy, "buy-spelunker", CastleBlock.Type.SPELUNKER)
+                        .addComponent(new Hint("Workshop, extra spelunker."));
             case "expand-wall":
-                return createExpansionOption(cx, cy, "buy-wall", CastleBlock.Type.WALL);
+                return createExpansionOption(cx, cy, "buy-wall", CastleBlock.Type.WALL)
+                        .addComponent(new Hint("Wall, cheap reinforcement"));
             case "building-hammer":
                 return createExpansionPoint(entity,cx,cy);
 
@@ -254,6 +258,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         switch(entity)
         {
             case "marker-monster":
+                questEntity.addComponent(new Hint("Approaching Imp."));
                 // monsters slowly ascend.
                 questComp.dangerous = true;
                 Physics physics = new Physics();
@@ -263,15 +268,19 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 questComp.gold = MathUtils.random(3,6);
                 break;
             case "marker-gem":
+                questEntity.addComponent(new Hint("Valuable gem"));
                 questComp.gold = 40;
             case "marker-gold":
                 questComp.gold = 20;
+                questEntity.addComponent(new Hint("Heap of gold!"));
                 break;
             case "marker-dungeon":
+                questEntity.addComponent(new Hint("Dungeon"));
                 questComp.dangerous = true;
                 questComp.spawnGold = true; // dungeons explode into gold!
                 break;
             case "marker-portal":
+                questEntity.addComponent(new Hint("Portal"));
                 questComp.dangerous = true;
                 questComp.spawnMonsters = true;
                 break;
@@ -321,21 +330,35 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         switch(type)
         {
             case "queen":
+                questee.workSpeed *= 2f;
+                questee.actionSfx = null;
                 entity
                         .addComponent(new Taxing())
                         .addComponent(new Incappable("queen", "queen-hurt", 10))
+                        .addComponent(new Hint("The queen, generates coins when undamaged."))
                         .addComponent(new Anim("queen", 13)); break;
             case "knight":
-                    questee.travelSpeed *= 0.2f;
-                    questee.workSpeed *= 0.5f;
+                    questee.travelSpeed *= 0.35f;
+                    questee.workSpeed *= 1.5f;
+                questee.actionSfx = "sfx_foryou";
                     entity
+                    .addComponent(new Hint("The knight, heals fast, moves slow."))
                     .addComponent(new Incappable("knight", "knight-hurt", 2))
                     .addComponent(new Anim("knight", 13)); break;
             case "mage":
                     questee.travelSpeed *= 4f;
                     questee.workSpeed *= 4f;
-                    entity.addComponent(new Incappable("mage", "mage-hurt",10)).addComponent(new Anim("mage", 13)); break;
-            case "spelunker": entity.addComponent(new Incappable("spelunker", "spelunker-hurt",5)).addComponent(new Anim("spelunker", 13)); break;
+                    questee.actionSfx = "sfx_hocuspocus";
+                    entity
+                       .addComponent(new Incappable("mage", "mage-hurt",10))
+                       .addComponent(new Hint("The mage, slow healer, fast mover!"))
+                       .addComponent(new Anim("mage", 13)); break;
+            case "spelunker":
+                    questee.actionSfx = "sfx_treasure";
+                    entity
+                       .addComponent(new Incappable("spelunker", "spelunker-hurt",5))
+                       .addComponent(new Hint("Spelunker. Gathers treasures!"))
+                       .addComponent(new Anim("spelunker", 13)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }
 
@@ -376,6 +399,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     private Entity createElevator(int cx, int cy) {
         world.createEntity()
                 .addComponent(new Pos(cx, cy))
+                .addComponent(new Bounds(0,0,23,25))
+                .addComponent(new Hint("Mining elevator"))
                 .addComponent(new Anim("lift-frame", -80)).addToWorld();
         Entity cage = world.createEntity()
                 .addComponent(new Pos(cx+3, cy))

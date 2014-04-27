@@ -104,6 +104,9 @@ public class QuestSystem extends EntityProcessingSystem {
             final Questee questee = qm.get(actor);
             if (questee.quest == null || !questee.quest.isActive()) {
                 tagManager.unregister("focus");
+                if ( questee.actionSfx != null ) {
+                    assetSystem.playSfx(questee.actionSfx);
+                }
                 questee.quest = new SafeEntityReference(quest);
 
                 // create tracker that indicates travel to the entity.
