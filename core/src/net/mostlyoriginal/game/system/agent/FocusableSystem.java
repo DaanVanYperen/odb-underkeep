@@ -52,8 +52,8 @@ public class FocusableSystem extends EntityProcessingSystem {
             // move indicator to selected entity and make visible.
             Pos ePos = pm.get(e);
             Pos indicatorPos = pm.get(indicator);
-            indicatorPos.x = ePos.x;
-            indicatorPos.y = ePos.y;
+            indicatorPos.x = ePos.x-2;
+            indicatorPos.y = ePos.y-2;
             am.get(indicator).visible = true;
         }
     }

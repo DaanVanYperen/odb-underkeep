@@ -324,18 +324,18 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 entity
                         .addComponent(new Taxing())
                         .addComponent(new Incappable("queen", "queen-hurt", 10))
-                        .addComponent(new Anim("queen", 11)); break;
+                        .addComponent(new Anim("queen", 13)); break;
             case "knight":
                     questee.travelSpeed *= 0.2f;
                     questee.workSpeed *= 0.5f;
                     entity
                     .addComponent(new Incappable("knight", "knight-hurt", 2))
-                    .addComponent(new Anim("knight", 11)); break;
+                    .addComponent(new Anim("knight", 13)); break;
             case "mage":
                     questee.travelSpeed *= 4f;
                     questee.workSpeed *= 4f;
-                    entity.addComponent(new Incappable("mage", "mage-hurt",10)).addComponent(new Anim("mage", 11)); break;
-            case "spelunker": entity.addComponent(new Incappable("spelunker", "spelunker-hurt",5)).addComponent(new Anim("spelunker", 11)); break;
+                    entity.addComponent(new Incappable("mage", "mage-hurt",10)).addComponent(new Anim("mage", 13)); break;
+            case "spelunker": entity.addComponent(new Incappable("spelunker", "spelunker-hurt",5)).addComponent(new Anim("spelunker", 13)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }
 
@@ -423,7 +423,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("mouse").addToWorld();
         createEntity("radar", RADAR_X, RADAR_Y).addToWorld();
 
-        int tmpY = (int)(cameraSystem.getPixelHeight() - 18);
+        int tmpY = (int)(cameraSystem.getPixelHeight() - 22);
         int tmpX = 120;
         int stepSize = 14;
         createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8)).addToWorld();
