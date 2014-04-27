@@ -3,6 +3,7 @@ package net.mostlyoriginal.game;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
+import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -40,6 +41,7 @@ public class MainScreen implements Screen {
         world.setManager(new GroupManager());
         world.setManager(new TagManager());
         world.setManager(new FontManager());
+        world.setManager(new UuidEntityManager());
 
         /** UTILITY - PASSIVE */
 

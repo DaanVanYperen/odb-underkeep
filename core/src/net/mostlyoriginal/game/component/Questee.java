@@ -3,6 +3,8 @@ package net.mostlyoriginal.game.component;
 import com.artemis.Component;
 import net.mostlyoriginal.api.utils.EntityReference;
 
+import java.util.UUID;
+
 /**
  * For quest takers.
  *
@@ -10,4 +12,5 @@ import net.mostlyoriginal.api.utils.EntityReference;
  */
 public class Questee extends Component {
     public EntityReference quest;
+    public UUID tracker;
 }

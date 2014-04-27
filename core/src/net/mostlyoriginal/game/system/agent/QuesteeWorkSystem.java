@@ -5,7 +5,10 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
+import com.artemis.managers.UuidEntityManager;
 import com.artemis.systems.EntityProcessingSystem;
+import net.mostlyoriginal.api.component.physics.Physics;
+import net.mostlyoriginal.api.utils.EntityUtil;
 import net.mostlyoriginal.game.component.Damage;
 import net.mostlyoriginal.game.component.Quest;
 import net.mostlyoriginal.game.component.Questee;
@@ -26,8 +29,11 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
     ComponentMapper<Questee> qm;
     ComponentMapper<Damage> dm;
     ComponentMapper<Quest> qum;
+    ComponentMapper<Physics> pm;
     TagManager tagManager;
     DamageSystem damageSystem;
+
+    UuidEntityManager uuidEntityManager;
 
     public QuesteeWorkSystem() {
         super(Aspect.getAspectForAll(Questee.class));
@@ -39,10 +45,14 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
         Questee questee = qm.get(e);
         if ( questee.quest != null )
         {
+            Entity tracker = uuidEntityManager.getEntity(questee.tracker);
+
             if ( questee.quest.isActive() ) {
                 Entity questEntity = questee.quest.get();
                 Quest quest = qum.get(questEntity);
-                if (quest.workRemaining > 0) {
+
+                // only allow working on quest when near it.
+                if (quest.workRemaining > 0 && tracker != null && tracker.isActive() && (EntityUtil.distance(tracker, questEntity) < 20)) {
                     workOnQuest(e, quest);
                 }
 
@@ -53,13 +63,29 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
                     e.removeComponent(Focusable.class).changedInWorld();
                 }
             } else {
+
                 // restore focus when done working.
                 if ( !fm.has(e))
                 {
+                    if ( tracker != null && tracker.isActive() )
+                    {
+                        surfaceTracker(tracker);
+                    }
+
                     e.addComponent(new Focusable()).changedInWorld();
                 }
             }
         }
+    }
+
+    private void surfaceTracker(Entity tracker) {
+
+
+        // shoot tracker up and purge.
+        pm.get(tracker).friction=0;
+        pm.get(tracker).vy=10;
+        // @todo move to tracker system.
+        tracker.deleteFromWorld();
     }
 
     private void workOnQuest(Entity actor, Quest quest) {

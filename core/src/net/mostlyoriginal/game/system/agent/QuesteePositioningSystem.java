@@ -7,6 +7,7 @@ import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
+import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.system.camera.CameraSystem;
 import net.mostlyoriginal.game.component.Questee;
 
@@ -21,6 +22,7 @@ public class QuesteePositioningSystem extends EntityProcessingSystem {
     public static final int OFFSET_X = 45;
     ComponentMapper<Questee> qm;
     ComponentMapper<Pos> pm;
+    ComponentMapper<Anim> am;
     CameraSystem cameraSystem;
     private int countLeft;
     private int countRight;
@@ -36,6 +38,10 @@ public class QuesteePositioningSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
+
+        // don't position invisible mobs.
+        if ( am.has(e) && !am.get(e).visible )
+            return;
 
         Questee questee = qm.get(e);
         boolean placeRight = ( questee.quest != null && questee.quest.isActive());

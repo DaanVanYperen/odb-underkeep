@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
+import net.mostlyoriginal.api.component.physics.Homing;
 import net.mostlyoriginal.api.utils.SafeEntityReference;
 import net.mostlyoriginal.game.component.Quest;
 import net.mostlyoriginal.game.component.Questee;
@@ -92,6 +93,15 @@ public class QuestSystem extends EntityProcessingSystem {
             if (questee.quest == null || !questee.quest.isActive()) {
                 tagManager.unregister("focus");
                 questee.quest = new SafeEntityReference(quest);
+
+                // create tracker that indicates travel to the entity.
+                Entity dot = entityFactorySystem.createEntity("tracker")
+                        .addComponent(new Homing(new SafeEntityReference(quest), 5,5));
+                Pos pos = pm.get(quest);
+                Pos posDot = pm.get(dot);
+                posDot.x = pos.x + 4;
+                dot.addToWorld();
+                questee.tracker = dot.getUuid();
             }
         }
 

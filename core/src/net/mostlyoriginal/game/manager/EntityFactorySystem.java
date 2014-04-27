@@ -63,6 +63,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "mage" : return createAgent(cx, cy, "mage");
             case "spelunker" : return createAgent(cx, cy, "spelunker");
             case "indicator" : return createIndicator(cx, cy);
+            case "tracker" : return createTracker(RADAR_X, RADAR_Y + 122);
             case "mouse" : return createMouse();
             case "particle-debris":
                 return createParticleDebris(cx, cy);
@@ -103,6 +104,13 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             /** @todo Add your entities here */
             default: throw new RuntimeException("No idea how to spawn " + entity);
         }
+    }
+
+    private Entity createTracker(int cx, int cy) {
+        return world.createEntity().addComponent(new Pos(cx,cy))
+                .addComponent(new Anim("lift-dot",51))
+                .addComponent(new Physics())
+                .addComponent(new Bounds(2, 2));
     }
 
     private Entity createJumpingImp(int cx, int cy) {
@@ -211,7 +219,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Bounds(10, 10))
                 .addComponent(new Clickable())
                 .addComponent(questComp)
-                .addComponent(new Anim(entity, entity.equals("marker-monster") ? 52 : 51));
+                .addComponent(new Anim(entity, entity.equals("marker-monster") ? 53 : 52));
 
         switch(entity)
         {
