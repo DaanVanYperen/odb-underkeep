@@ -23,7 +23,6 @@ import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.manager.FontManager;
 import net.mostlyoriginal.game.system.*;
 import net.mostlyoriginal.game.system.agent.*;
-import net.mostlyoriginal.game.system.interact.PluckableSystem;
 
 /**
  * @author Daan van Yperen
@@ -57,7 +56,7 @@ public class MainScreen implements Screen {
         world.setSystem(new FocusableSystem());
 
         /** Acting Systems (Control and Interact) */
-        world.setSystem(new PluckableSystem());
+        //world.setSystem(new PluckableSystem());
         world.setSystem(new SchedulerSystem());
         world.setSystem(new EntitySpawnerSystem());
 
@@ -70,8 +69,9 @@ public class MainScreen implements Screen {
         world.setSystem(new ExpansionPointSystem());
         world.setSystem(new CastleSystem());
 
-        world.setSystem(new DamageSystem());
+        world.setSystem(new IncapacitateSystem());
         world.setSystem(new CastleLevelSystem());
+        world.setSystem(new QueenTaxSystem());
 
         /** SIMULATE */
 

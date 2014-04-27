@@ -1,10 +1,15 @@
 package net.mostlyoriginal.game.system;
 
+import com.artemis.ComponentMapper;
+import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import net.mostlyoriginal.api.component.basic.Bounds;
+import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.system.camera.CameraSystem;
+import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.manager.FontManager;
 
 /**
@@ -19,6 +24,11 @@ public class UIWalletSystem extends VoidEntitySystem {
     private SpriteBatch batch = new SpriteBatch();
     private CameraSystem cameraSystem;
     FontManager fontManager;
+
+    private EntityFactorySystem entityFactorySystem;
+    private ComponentMapper<Bounds> bm;
+    private ComponentMapper<Pos> pm;
+
 
     @Override
     protected void processSystem() {
@@ -48,5 +58,20 @@ public class UIWalletSystem extends VoidEntitySystem {
 
     public void add(int gold) {
         treasure += gold;
+    }
+
+    public void add(int gold, Entity source) {
+        add(gold);
+
+        // spawn dancing coins! :D
+        if ( pm.has(source) && bm.has(source) ) {
+
+            int x = (int)(pm.get(source).x + bm.get(source).cx());
+            int y = (int)(pm.get(source).y + bm.get(source).cy());
+
+            for ( int i=0,s=Math.min(10,gold);i<s;i++) {
+                entityFactorySystem.createEntity("particle-coin", x, y).addToWorld();
+            }
+        }
     }
 }

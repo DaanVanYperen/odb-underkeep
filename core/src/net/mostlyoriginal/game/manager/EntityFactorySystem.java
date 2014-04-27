@@ -67,6 +67,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "mouse" : return createMouse();
             case "particle-debris":
                 return createParticleDebris(cx, cy);
+            case "particle-coin":
+                return createParticleCoin(cx, cy);
             case "jumping-imp" :
                 return createJumpingImp(cx, cy);
             case "marker-monster":
@@ -144,6 +146,31 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         Anim anim = staticRandomizedAnim("particle-debris");
         anim.layer=9;
+        return world.createEntity()
+                        .addComponent(new Pos(cx, cy))
+                        .addComponent(new Bounds(6,5))
+                        .addComponent(new Angle())
+                        .addComponent(new Gravity())
+                        .addComponent(new Schedule()
+                                .wait(MathUtils.random(0.1f, 0.25f))
+                                .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 0.5f, 0.5f))
+                                .wait(1f)
+                                .deleteFromWorld())
+                        .addComponent(phys)
+                        .addComponent(anim);
+    }
+
+    private Entity createParticleCoin(int cx, int cy) {
+
+        Physics phys = new Physics();
+        phys.vx = MathUtils.random(25f,80f) * 3f;
+        if ( MathUtils.randomBoolean() ) phys.vx = -phys.vx;
+        phys.vy = MathUtils.random(100f,120f) * 2f;
+        phys.vr = MathUtils.random(-90,90);
+        phys.friction = 3f;
+
+        Anim anim = staticRandomizedAnim("particle-coin");
+        anim.layer=200;
         return world.createEntity()
                         .addComponent(new Pos(cx, cy))
                         .addComponent(new Bounds(6,5))
@@ -286,10 +313,14 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         switch(type)
         {
-            case "queen": entity.addComponent(new Damage("queen", "queen-hurt")).addComponent(new Anim("queen", 11)); break;
-            case "knight": entity.addComponent(new Damage("knight", "knight-hurt")).addComponent(new Anim("knight", 11)); break;
-            case "mage": entity.addComponent(new Damage("mage", "mage-hurt")).addComponent(new Anim("mage", 11)); break;
-            case "spelunker": entity.addComponent(new Damage("spelunker", "spelunker-hurt")).addComponent(new Anim("spelunker", 11)); break;
+            case "queen":
+                entity
+                        .addComponent(new Taxing())
+                        .addComponent(new Incappable("queen", "queen-hurt", 10))
+                        .addComponent(new Anim("queen", 11)); break;
+            case "knight": entity.addComponent(new Incappable("knight", "knight-hurt",5)).addComponent(new Anim("knight", 11)); break;
+            case "mage": entity.addComponent(new Incappable("mage", "mage-hurt",10)).addComponent(new Anim("mage", 11)); break;
+            case "spelunker": entity.addComponent(new Incappable("spelunker", "spelunker-hurt",5)).addComponent(new Anim("spelunker", 11)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }
 
