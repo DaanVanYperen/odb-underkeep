@@ -129,6 +129,7 @@ public class MainScreen implements Screen {
 
         // limit world delta to prevent clipping through walls.
         world.setDelta(MathUtils.clamp(delta, 0, 1 / 15f));
+        //world.delta = 0.25f;
         world.process();
     }
 

@@ -262,7 +262,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 // monsters slowly ascend.
                 questComp.dangerous = true;
                 Physics physics = new Physics();
-                physics.vy= 1;
+                physics.vy= 2;
                 physics.friction=0;
                 questEntity.addComponent(physics).addComponent(new Erupt(cameraSystem.getPixelHeight() - 8));
                 questComp.gold = MathUtils.random(3,6);
@@ -281,6 +281,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 break;
             case "marker-portal":
                 questEntity.addComponent(new Hint("Portal"));
+                questComp.workable=false;
                 questComp.dangerous = true;
                 questComp.spawnMonsters = true;
                 break;

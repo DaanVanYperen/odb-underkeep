@@ -54,11 +54,11 @@ public class QuestSystem extends EntityProcessingSystem {
             return;
         }
 
-        if (cm.get(e).clicked && tagManager.isRegistered("focus")) {
+        Quest quest = qum.get(e);
+        if (cm.get(e).clicked && quest.workable && tagManager.isRegistered("focus")) {
             activateQuestFor(e, tagManager.getEntity("focus"));
         }
 
-        Quest quest = qum.get(e);
         if (quest.workRemaining <= 0) {
             payoutQuest(e);
             e.deleteFromWorld();
