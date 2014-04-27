@@ -24,8 +24,8 @@ import net.mostlyoriginal.game.manager.EntityFactorySystem;
 @Wire
 public class CastleSystem extends EntityProcessingSystem {
 
-    public static final int H = 10;
-    public static final int W = 10;
+    public static final int H = 6;
+    public static final int W = 14;
     private static final int BIRD_SPAWN_LEVEL = 3;
     public CastleBlock.Type castle[][] = new CastleBlock.Type[H][W];
 
