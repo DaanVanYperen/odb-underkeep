@@ -5,6 +5,7 @@ import net.mostlyoriginal.api.Depends;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.utils.EntityReference;
+import net.mostlyoriginal.api.utils.SafeEntityReference;
 
 /**
  * Accelerate entity towards target entity in a straight path.
@@ -22,7 +23,18 @@ public class Homing extends Component {
     // Distance within which this entity will accelerate.
     public float maxDistance = 999999f;
 
+    // yoffset from target
+    public float yo;
+    // xoffset from target
+    public float xo;
+
     public Homing(EntityReference target) {
         this.target = target;
+    }
+
+    public Homing(SafeEntityReference target, int xo, int yo) {
+        this.target = target;
+        this.xo = xo;
+        this.yo = yo;
     }
 }

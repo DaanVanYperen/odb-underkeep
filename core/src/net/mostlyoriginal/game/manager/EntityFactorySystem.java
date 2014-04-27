@@ -51,6 +51,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         switch (entity) {
             case "background" : return createBackground();
             case "hills" : return createHills(cx, cy);
+            case "bird" : return createBird(cx, cy);
             case "cloud" : return createCloud(cx, cy);
             case "radar" : return createRadar(cx, cy);
             case "lift" : return createElevator(cx, cy);
@@ -122,7 +123,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     private Entity createExpansionOption(int cx, int cy, String animId, CastleBlock.Type type) {
         return world.createEntity()
                 .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(17,13))
+                .addComponent(new Bounds(17, 13))
                 .addComponent(new Clickable())
                 .addComponent(new ExpansionOption(type))
                 .addComponent(new Anim(animId, 13));
@@ -131,7 +132,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     private Entity createTrimming(String entity, int cx, int cy) {
         return world.createEntity()
                 .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(17,13))
+                .addComponent(new Bounds(17, 13))
                 .addComponent(new CastleBlock())
                 .addComponent(new Anim(entity, -5));
     }
@@ -144,7 +145,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Clickable())
                 .addComponent(new Focusable())
                 .addComponent(new ExpansionPoint())
-                .addComponent(new Anim(entity, 12));
+                .addComponent(new Anim(entity, -6));
     }
 
     private Entity createBlock(String entity, int cx, int cy) {
@@ -255,7 +256,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         Clamped clamped = new Clamped(-40, 0, Gdx.graphics.getWidth() / G.CAMERA_ZOOM_FACTOR +10, Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR);
         clamped.wrap = true;
         Anim anim = staticRandomizedAnim("cloud");
-        anim.scale=MathUtils.random(1f,4f);
+        anim.scale=MathUtils.random(1f,1.2f);
         anim.color.a= 0.1f + (MathUtils.random(0.1f, 0.2f) * (1f/anim.scale));
         anim.layer = -98;
         return world.createEntity()
@@ -263,6 +264,18 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(anim)
                 .addComponent(physics)
                 .addComponent(clamped);
+    }
+
+    private Entity createBird(int cx, int cy) {
+
+        // clamp with wrap so clouds can swoop around
+        CastleBlock castleBlock = new CastleBlock();
+        castleBlock.fadeoutOnReplace=true;
+        return world.createEntity()
+                .addComponent(new Pos(cx, cy))
+                .addComponent(castleBlock)
+                .addComponent(new ColorAnimation(new Color(1, 1, 1, 0), new Color(1, 1, 1, 1), Interpolation.linear, 1f, 1f))
+                .addComponent(new Anim("bird", 11));
     }
 
     private Entity createElevator(int cx, int cy) {

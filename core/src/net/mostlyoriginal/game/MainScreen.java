@@ -19,6 +19,7 @@ import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
+import net.mostlyoriginal.game.system.BobbingSystem;
 import net.mostlyoriginal.game.system.CastleSystem;
 import net.mostlyoriginal.game.system.agent.*;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
@@ -78,6 +79,7 @@ public class MainScreen implements Screen {
         world.setSystem(new InbetweenSystem());
         world.setSystem(new MouseCursorSystem());
         world.setSystem(new QuesteePositioningSystem());
+        world.setSystem(new BobbingSystem());
         /** apply velocity */
         world.setSystem(new PhysicsSystem());
 

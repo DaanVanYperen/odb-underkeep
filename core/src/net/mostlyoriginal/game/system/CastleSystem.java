@@ -1,11 +1,17 @@
 package net.mostlyoriginal.game.system;
 
 import com.artemis.Aspect;
+import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import net.mostlyoriginal.api.component.graphics.ColorAnimation;
+import net.mostlyoriginal.api.component.script.Schedule;
+import net.mostlyoriginal.game.component.Bobbing;
 import net.mostlyoriginal.game.component.CastleBlock;
 import net.mostlyoriginal.game.component.ExpansionPoint;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
@@ -20,12 +26,15 @@ public class CastleSystem extends EntityProcessingSystem {
 
     public static final int H = 10;
     public static final int W = 10;
+    private static final int BIRD_SPAWN_LEVEL = 3;
     public CastleBlock.Type castle[][] = new CastleBlock.Type[H][W];
 
     public boolean castleDirty = true;
 
     EntityFactorySystem entityFactorySystem;
     private int randomUsedX;
+
+    ComponentMapper<CastleBlock> cm;
 
     public CastleSystem() {
         super(Aspect.getAspectForAll(CastleBlock.class));
@@ -56,8 +65,16 @@ public class CastleSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-        if ( castleDirty)
-            e.deleteFromWorld();
+        if ( castleDirty) {
+            if ( cm.get(e).fadeoutOnReplace )
+            {
+                e.addComponent(new Schedule().wait(1f).deleteFromWorld())
+                        .addComponent(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 1f, 1f))
+                        .changedInWorld();
+            } else {
+                e.deleteFromWorld();
+            }
+        }
     }
 
     protected void assembleCastle()
@@ -93,8 +110,11 @@ public class CastleSystem extends EntityProcessingSystem {
                     if ( isWallAt(x-1, y) && isWallAt(x-1, y+1) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-right", px, py).addToWorld();
                     else if ( isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-top-wall-right", px, py).addToWorld();
 
-                    // tower top.
-                    if ( isTowerAt(x, y-1) && !isTowerAt(x,y) ) entityFactorySystem.createEntity("building-trimming-on-tower", px, py).addToWorld();
+                    // tower spire.
+                    if ( isTowerAt(x, y-1) && !isTowerAt(x,y) ) {
+                        entityFactorySystem.createEntity("building-trimming-on-tower", px, py).addToWorld();
+                        if ( y >= BIRD_SPAWN_LEVEL ) spawnBirdsOfDoom(px, py);
+                    }
 
                     if ( (isWallAt(x, y-1) && !isWallAt(x, y)) || (isTowerAt(x,y-2) && !isTowerAt(x,y-1)))
                     {
@@ -102,6 +122,19 @@ public class CastleSystem extends EntityProcessingSystem {
                     }
                 }
             }
+        }
+    }
+
+    private void spawnBirdsOfDoom(int px, int py) {
+        // spires need birds! provided they're high up enough
+        for ( int i=0,s= MathUtils.random(1, 3);i<s;i++)
+        {
+            Bobbing bobbing = new Bobbing(10, 2, px + 6, py + MathUtils.random(15, 20), MathUtils.random(0.1f, 0.15f));
+            bobbing.age = MathUtils.random(0f,1f);
+            entityFactorySystem
+                    .createEntity("bird")
+                    .addComponent(bobbing)
+                    .addToWorld();
         }
     }
 

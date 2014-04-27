@@ -26,6 +26,8 @@ public class Physics extends Component implements Serializable {
     // does nothing!
     public float bounce = 0f;
 
+    // Minimum travel distance in units (typically pixels) per second.
+    public float minVelocity = 0;
     // Maximum travel distance in units (typically pixels) per second.
     public float maxVelocity = Float.MAX_VALUE;
 }

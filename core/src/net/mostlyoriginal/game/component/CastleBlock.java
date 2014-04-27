@@ -13,6 +13,8 @@ public class CastleBlock extends Component {
         TOWER
     };
 
+    public boolean fadeoutOnReplace;
+
     public static enum Type {
         EMPTY(SubType.NONE),
         TOWER(SubType.TOWER),
