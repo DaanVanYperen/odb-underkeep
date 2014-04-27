@@ -37,7 +37,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
     public static final int RADAR_X = 5;
     public static final int RADAR_Y = 26;
-    public static final int SERVANT_Y = 10;
+    public static final int SERVANT_Y = 14;
     private TagManager tagManager;
     private AbstractAssetSystem abstractAssetSystem;
     private CameraSystem cameraSystem;
@@ -273,6 +273,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Bounds(17,13))
                 .addComponent(new Clickable())
                 .addComponent(new Questee())
+                .addComponent(new Level(1))
                 .addComponent(new Focusable());
 
         switch(type)

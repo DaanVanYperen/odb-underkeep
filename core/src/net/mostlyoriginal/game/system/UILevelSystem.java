@@ -11,7 +11,7 @@ import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.system.camera.CameraSystem;
-import net.mostlyoriginal.game.component.Cost;
+import net.mostlyoriginal.game.component.Level;
 import net.mostlyoriginal.game.component.agent.Focusable;
 import net.mostlyoriginal.game.manager.FontManager;
 
@@ -19,7 +19,7 @@ import net.mostlyoriginal.game.manager.FontManager;
  * @author Daan van Yperen
  */
 @Wire
-public class UICostSystem extends EntityProcessingSystem {
+public class UILevelSystem extends EntityProcessingSystem {
 
     public Color DARK_SCORE_COLOR;
 
@@ -29,10 +29,10 @@ public class UICostSystem extends EntityProcessingSystem {
     ComponentMapper<Focusable> fm;
     ComponentMapper<Pos> pm;
     ComponentMapper<Bounds> bm;
-    ComponentMapper<Cost> cm;
+    ComponentMapper<Level> lm;
 
-    public UICostSystem() {
-        super(Aspect.getAspectForAll(Cost.class, Pos.class, Bounds.class, Anim.class));
+    public UILevelSystem() {
+        super(Aspect.getAspectForAll(Level.class, Pos.class, Bounds.class, Anim.class));
     }
 
     private SpriteBatch batch = new SpriteBatch();
@@ -53,7 +53,7 @@ public class UICostSystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
 
-        Cost cost = cm.get(e);
+        Level level = lm.get(e);
         Pos pos = pm.get(e);
         Bounds bounds = bm.get(e);
         Anim anim = am.get(e);
@@ -61,15 +61,7 @@ public class UICostSystem extends EntityProcessingSystem {
         batch.setColor(1f, 1f, 1f, 1f);
         fontManager.font.setColor(1f,1f,1f,1f);
 
-        boolean canAfford = uiWalletSystem.canAfford(cost.cost);
-        anim.color.a = canAfford ? 1.0f : 0.5f;
-
-        // disable selection when cannot afford.
-        if ( !canAfford && fm.has(e) ) e.removeComponent(Focusable.class).changedInWorld();
-        // enable selection when can afford.
-        if ( canAfford && !fm.has(e) ) e.addComponent(new Focusable()).changedInWorld();
-
-        String msg = "" + cost.cost;
+        String msg = "l" + level.level;
         fontManager.font.setColor(1f,1f,1f, anim.color.a);
         fontManager.font.draw(batch, msg, pos.x + bounds.cx() - fontManager.font.getBounds(msg).width/2 - 1, pos.y - 2);
     }
