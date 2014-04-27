@@ -9,6 +9,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.systems.EntityProcessingSystem;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
+import net.mostlyoriginal.api.system.camera.CameraSystem;
 import net.mostlyoriginal.game.component.ExpansionOption;
 import net.mostlyoriginal.game.component.ExpansionPoint;
 import net.mostlyoriginal.game.component.agent.Clickable;
@@ -31,6 +32,7 @@ public class ExpansionPointSystem extends EntityProcessingSystem {
     ComponentMapper<ExpansionOption> om;
     TagManager tagManager;
     CastleSystem castleSystem;
+    CameraSystem cameraSystem;
     GroupManager groupManager;
     EntityFactorySystem entityFactorySystem;
 
@@ -51,6 +53,9 @@ public class ExpansionPointSystem extends EntityProcessingSystem {
             int count = (point.allowTowers ? 1 : 0) + (point.allowWalls ? 3 : 0);
             int x = (int)pos.x - (int)(((OFFSET_PER_COUNT) * 0.5f * count) - 9f) ;
             int y = (int)pos.y + 20;
+
+            if ( x <= 4 ) x = 4;
+            if ( y >= cameraSystem.getPixelHeight() - 20 ) y = (int)(cameraSystem.getPixelHeight() - 20);
 
             if ( point.allowTowers )
             {
