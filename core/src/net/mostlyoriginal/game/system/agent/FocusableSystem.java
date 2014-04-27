@@ -44,6 +44,10 @@ public class FocusableSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         Clickable clickable = cm.get(e);
         if (clickable.clicked) {
+
+            // only render when main anim is visible.
+            if ( am.has(e) && !am.get(e).visible ) return;
+
             tagManager.register("focus", e);
             // move indicator to selected entity and make visible.
             Pos ePos = pm.get(e);

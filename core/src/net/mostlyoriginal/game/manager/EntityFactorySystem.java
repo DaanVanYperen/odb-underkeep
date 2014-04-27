@@ -273,7 +273,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Bounds(17,13))
                 .addComponent(new Clickable())
                 .addComponent(new Questee())
-                .addComponent(new Level(1))
+                .addComponent(new Level(1, type))
                 .addComponent(new Focusable());
 
         switch(type)

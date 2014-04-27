@@ -58,6 +58,9 @@ public class UILevelSystem extends EntityProcessingSystem {
         Bounds bounds = bm.get(e);
         Anim anim = am.get(e);
 
+        // only render when main anim is visible.
+        if ( !anim.visible ) return;
+
         batch.setColor(1f, 1f, 1f, 1f);
         fontManager.font.setColor(1f,1f,1f,1f);
 

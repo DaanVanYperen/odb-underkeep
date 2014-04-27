@@ -7,9 +7,11 @@ import com.artemis.Component;
  */
 public class Level extends Component{
 
-    public final int level;
+    public int level;
+    public final String type;
 
-    public Level( int level) {
+    public Level(int level, String type) {
         this.level = level;
+        this.type = type;
     }
 }

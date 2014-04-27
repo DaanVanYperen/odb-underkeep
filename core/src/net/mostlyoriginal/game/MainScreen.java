@@ -69,6 +69,7 @@ public class MainScreen implements Screen {
         world.setSystem(new CastleSystem());
 
         world.setSystem(new DamageSystem());
+        world.setSystem(new CastleLevelSystem());
 
         /** SIMULATE */
 

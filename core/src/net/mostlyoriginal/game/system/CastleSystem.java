@@ -30,6 +30,11 @@ public class CastleSystem extends EntityProcessingSystem {
     public static final int CASTLE_X_OFFSET = 50;
     public CastleBlock.Type castle[][] = new CastleBlock.Type[H][W];
 
+    public int knightLevel = 0;
+    public int mageLevel = 0;
+    public int spelunkerLevel = 1; // we always have a spelunker.
+    public int queenLevel = 1; // we always have a queen.
+
     public boolean castleDirty = true;
 
     EntityFactorySystem entityFactorySystem;
@@ -180,6 +185,12 @@ public class CastleSystem extends EntityProcessingSystem {
     }
 
     private void spawnCoreBlocks() {
+
+        knightLevel = 0;
+        mageLevel = 0;
+        spelunkerLevel = 0;
+        queenLevel = 1;
+
         // spawn core blocks.
         for ( int x=0;x<W;x++)
         {
@@ -196,12 +207,15 @@ public class CastleSystem extends EntityProcessingSystem {
                         break;
                     case BARRACKS:
                         entityFactorySystem.createEntity("building-barracks", px, py).addToWorld();
+                        knightLevel++;
                         break;
                     case SPELUNKER:
                         entityFactorySystem.createEntity("building-spelunker", px, py).addToWorld();
+                        spelunkerLevel++;
                         break;
                     case TOWER:
                         entityFactorySystem.createEntity("building-tower", px, py).addToWorld();
+                        mageLevel++;
                         break;
                 }
             }
