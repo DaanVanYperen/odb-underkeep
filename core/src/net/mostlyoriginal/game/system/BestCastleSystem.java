@@ -23,6 +23,7 @@ public class BestCastleSystem extends VoidEntitySystem {
     public int bestValue = -1;
 
     private DirectorSystem directorSystem;
+    private UITitleSystem uiTitleSystem;
 
     public BestCastleSystem(MyGame game ) {
         this.game = game;
@@ -54,10 +55,26 @@ public class BestCastleSystem extends VoidEntitySystem {
         if ( value == 0 )
         {
             // game over!
+            uiTitleSystem.setMessage("Game Over", "Keep Rank: " + bestValue, valueToRank(bestValue),999 );
+            uiTitleSystem.sub3 = "Press space to retry";
             restoreBestCastle();
             directorSystem.gameOver();
             world.getSystem(QueenTaxSystem.class).setEnabled(false);
         }
+    }
+
+    private String valueToRank(int value) {
+
+        if ( value < 2 ) return "Meh";
+        if ( value < 4 ) return "Beginner";
+        if ( value < 6 ) return "Remarkable";
+        if ( value < 8 ) return "Exceptional";
+        if ( value < 10 ) return "Astounding";
+        if ( value < 14 ) return "Breathtaking";
+        if ( value < 20 ) return "Staggering";
+        if ( value < 30 ) return "Phenomenal";
+        if ( value < 40 ) return "Prodigious";
+        return "Fabulous";
     }
 
     public void restoreBestCastle()

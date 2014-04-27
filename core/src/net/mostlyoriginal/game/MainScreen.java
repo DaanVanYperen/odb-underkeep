@@ -112,6 +112,7 @@ public class MainScreen implements Screen {
         world.setSystem(new UIWalletSystem());
         world.setSystem(new UICostSystem());
         world.setSystem(new UILevelSystem());
+        world.setSystem(new UITitleSystem());
 
         world.setSystem(new DirectorSystem());
 

@@ -409,7 +409,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         for ( int i=0; i<20; i++)
         {
-            createEntity("marker-monster", RADAR_X, RADAR_Y +95-i).addToWorld();
+            createEntity("marker-monster", RADAR_X, RADAR_Y +85-i).addToWorld();
         }
 
         for ( int i=0; i<20; i++)
