@@ -19,8 +19,10 @@ import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
+import net.mostlyoriginal.game.manager.FontManager;
 import net.mostlyoriginal.game.system.BobbingSystem;
 import net.mostlyoriginal.game.system.CastleSystem;
+import net.mostlyoriginal.game.system.WalletSystem;
 import net.mostlyoriginal.game.system.agent.*;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 
@@ -39,6 +41,7 @@ public class MainScreen implements Screen {
 
         world.setManager(new GroupManager());
         world.setManager(new TagManager());
+        world.setManager(new FontManager());
 
         /** UTILITY - PASSIVE */
 
@@ -99,6 +102,8 @@ public class MainScreen implements Screen {
         /** Rendering */
         //world.setSystem(new MapRenderSystem());
         world.setSystem(new AnimRenderSystem(G.CAMERA_ZOOM_FACTOR));
+
+        world.setSystem(new WalletSystem());
 
         world.initialize();
     }
