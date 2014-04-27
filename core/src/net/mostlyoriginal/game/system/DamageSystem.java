@@ -32,14 +32,17 @@ public class DamageSystem extends EntityProcessingSystem {
         Damage damage = dm.get(e);
         Anim anim = am.get(e);
 
+        final Questee questee = qm.get(e);
+        boolean onQuest = !(questee.quest == null || !questee.quest.isActive());
+
         anim.id = damage.damaged ? damage.animDamagedId : damage.animId;
+        anim.color.a = damage.damaged && !onQuest ? 0.6f : 1.0f;
 
         // don't allow focus during damage.
         if (damage.damaged && fm.has(e)) e.removeComponent(Focusable.class).changedInWorld();
 
         // not currently on quest.
-        final Questee questee = qm.get(e);
-        if (questee.quest == null || !questee.quest.isActive()) {
+        if (!onQuest) {
 
             // cooldown damage.
             damage.cooldown -= world.delta;
