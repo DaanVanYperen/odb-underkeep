@@ -63,8 +63,9 @@ public class DirectorSystem  extends VoidEntitySystem {
         }
     }
 
+    // portalinterval creates a bit of a buffer early game.
     private int randomRadarY() {
-        return entityFactory.RADAR_Y + 26 + MathUtils.random(90);
+        return entityFactory.RADAR_Y + 26 + MathUtils.random(90 - (int)(portalInterval*2));
     }
 
     private int randomRadarX() {

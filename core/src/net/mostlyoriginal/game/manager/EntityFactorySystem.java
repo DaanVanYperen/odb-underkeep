@@ -335,7 +335,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 questee.actionSfx = null;
                 entity
                         .addComponent(new Taxing())
-                        .addComponent(new Incappable("queen", "queen-hurt", 10))
+                        .addComponent(new Incappable("queen", "queen-hurt", 5))
                         .addComponent(new Hint("The queen, generates coins when undamaged."))
                         .addComponent(new Anim("queen", 13)); break;
             case "knight":
