@@ -49,5 +49,6 @@ public class EruptSystem extends EntityProcessingSystem {
         cameraShakeSystem.shake(1);
 
         entityFactorySystem.createEntity("jumping-imp" ,castleSystem.getRandomUsedX(), 30).addToWorld();
+        castleSystem.demolishRandomTopBlock();
     }
 }

@@ -61,8 +61,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "spelunker" : return createAgent(cx, cy, "spelunker");
             case "indicator" : return createIndicator(cx, cy);
             case "mouse" : return createMouse();
+            case "particle-debris":
+                return createParticleDebris(cx, cy);
             case "jumping-imp" :
-                    return createJumpingImp(cx, cy);
+                return createJumpingImp(cx, cy);
             case "marker-monster":
             case "marker-gem":
             case "marker-gold":
@@ -118,6 +120,31 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                         .addComponent(new Schedule().wait(1f).deleteFromWorld())
                         .addComponent(phys)
                         .addComponent(new Anim("marker-monster", 9));
+    }
+
+    private Entity createParticleDebris(int cx, int cy) {
+
+        Physics phys = new Physics();
+        phys.vx = MathUtils.random(25f,80f) * 3f;
+        if ( MathUtils.randomBoolean() ) phys.vx = -phys.vx;
+        phys.vy = MathUtils.random(100f,120f) * 2f;
+        phys.vr = MathUtils.random(-90,90);
+        phys.friction = 3f;
+
+        Anim anim = staticRandomizedAnim("particle-debris");
+        anim.layer=9;
+        return world.createEntity()
+                        .addComponent(new Pos(cx, cy))
+                        .addComponent(new Bounds(6,5))
+                        .addComponent(new Angle())
+                        .addComponent(new Gravity())
+                        .addComponent(new Schedule()
+                                .wait(MathUtils.random(0.1f,0.25f))
+                                .add(new ColorAnimation(new Color(1,1,1,1), new Color(1,1,1,0), Interpolation.linear,0.5f, 0.5f))
+                                .wait(1f)
+                                .deleteFromWorld())
+                        .addComponent(phys)
+                        .addComponent(anim);
     }
 
     private Entity createExpansionOption(int cx, int cy, String animId, CastleBlock.Type type) {
@@ -326,11 +353,9 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("mouse").addToWorld();
         createEntity("radar",240,26).addToWorld();
 
-        createEntity("marker-monster", 245, 30).addToWorld();
-        createEntity("marker-monster", 250, 60).addToWorld();
-        createEntity("marker-monster", 255, 80).addToWorld();
-        createEntity("marker-monster", 245, 100).addToWorld();
-        createEntity("marker-monster", 250, 130).addToWorld();
+        for ( int i =0;i<100;i++) {
+            createEntity("marker-monster", 245 + MathUtils.random(10), 140-i).addToWorld();
+        }
         createEntity("marker-gem", 245, 40).addToWorld();
         createEntity("marker-gold", 245, 50).addToWorld();
         createEntity("marker-dungeon", 245, 60).addToWorld();

@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * @Todo Probably want to separate depth from anim, since they're used for other things as well.
  * @author Daan van Yperen
  */
 @Wire

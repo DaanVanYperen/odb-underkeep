@@ -30,6 +30,8 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("lift-frame", 0, 0, 23, 25,1);
         add("lift-cage", 23, 4, 17, 21,1);
 
+        add("particle-debris", 65, 85, 6, 5,2);
+
         add("queen", 0, 34, 13, 17,1);
         add("knight", 13, 34, 13, 17, 1);
         add("spelunker", 26, 34, 13, 17,1);

@@ -18,7 +18,7 @@ public class RemoveStep extends Step {
 
     @Override
     public boolean act(float delta, Entity e) {
-        e.removeComponent(componentClass);
+        e.removeComponent(componentClass).changedInWorld();
         return true;
     }
 

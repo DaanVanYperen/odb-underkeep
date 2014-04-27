@@ -216,6 +216,61 @@ public class CastleSystem extends EntityProcessingSystem {
         }
     }
 
+    /** demolish the whole ground floor! */
+    public void demolishGroundFloor()
+    {
+    }
+
+    /** demolish any random top block, if available */
+    public void demolishRandomTopBlock() {
+        Array<Integer> validX = new Array<Integer>();
+
+        // step down the tower, until we hit a row with blocks.
+        for (int y = H - 1; y >= 0; y--) {
+            // pick a random block from that row.
+            if (rowHasBlocks(y)) {
+                int x = rowGetRandomBlockX(y);
+                if ( x != -1 )
+                {
+                    demolishBlock(x,y);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void demolishBlock(int x, int y) {
+        castle[y][x] = CastleBlock.Type.EMPTY;
+        castleDirty=true;
+
+        // fling bricks everywhere!
+        for ( int i=0,s= MathUtils.random(4,6); i<s;i++) {
+            int px = 13 + x * 13 + MathUtils.random(0,13);
+            int py = 30 + y * 17 + MathUtils.random(0,17);
+            entityFactorySystem.createEntity("particle-debris", px, py).addToWorld();
+        }
+    }
+
+    private int rowGetRandomBlockX(int y) {
+        final Array<Integer> usedX = new Array<Integer>();
+        for ( int x=0;x<W;x++)
+        {
+            if ( castle[y][x] != CastleBlock.Type.EMPTY )
+            {
+                usedX.add(x);
+            }
+        }
+        Integer result = usedX.random();
+        return result != null ? result : -1;
+    }
+
+    private boolean rowHasBlocks(int y) {
+        for (int x = 0; x < W; x++) {
+            if ( castle[y][x] != CastleBlock.Type.EMPTY) return true;
+        }
+        return false;
+    }
+
     public void setBlock(int x, int y, CastleBlock.Type type) {
         if ( x<0 || y<0 || x>=W || y>=H ) return;
         castleDirty=true;
