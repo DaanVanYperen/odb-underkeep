@@ -303,11 +303,12 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
     private Entity createAgent(int cx, int cy, String type) {
 
+        Questee questee = new Questee();
         Entity entity = world.createEntity()
                 .addComponent(new Pos(cx, cy))
                 .addComponent(new Bounds(17,13))
                 .addComponent(new Clickable())
-                .addComponent(new Questee())
+                .addComponent(questee)
                 .addComponent(new Level(1, type))
                 .addComponent(new Focusable());
 
@@ -318,8 +319,16 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                         .addComponent(new Taxing())
                         .addComponent(new Incappable("queen", "queen-hurt", 10))
                         .addComponent(new Anim("queen", 11)); break;
-            case "knight": entity.addComponent(new Incappable("knight", "knight-hurt",5)).addComponent(new Anim("knight", 11)); break;
-            case "mage": entity.addComponent(new Incappable("mage", "mage-hurt",10)).addComponent(new Anim("mage", 11)); break;
+            case "knight":
+                    questee.travelSpeed *= 0.2f;
+                    questee.workSpeed *= 0.5f;
+                    entity
+                    .addComponent(new Incappable("knight", "knight-hurt", 2))
+                    .addComponent(new Anim("knight", 11)); break;
+            case "mage":
+                    questee.travelSpeed *= 4f;
+                    questee.workSpeed *= 4f;
+                    entity.addComponent(new Incappable("mage", "mage-hurt",10)).addComponent(new Anim("mage", 11)); break;
             case "spelunker": entity.addComponent(new Incappable("spelunker", "spelunker-hurt",5)).addComponent(new Anim("spelunker", 11)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }

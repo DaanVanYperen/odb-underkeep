@@ -95,8 +95,11 @@ public class QuestSystem extends EntityProcessingSystem {
                 questee.quest = new SafeEntityReference(quest);
 
                 // create tracker that indicates travel to the entity.
+                Homing homing = new Homing(new SafeEntityReference(quest), 5, 5);
+                homing.speedFactor *=  questee.travelSpeed;
+
                 Entity dot = entityFactorySystem.createEntity("tracker")
-                        .addComponent(new Homing(new SafeEntityReference(quest), 5,5));
+                        .addComponent(homing);
                 Pos pos = pm.get(quest);
                 Pos posDot = pm.get(dot);
                 posDot.x = pos.x + 4;
