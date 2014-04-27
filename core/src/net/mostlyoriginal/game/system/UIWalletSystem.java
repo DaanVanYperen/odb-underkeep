@@ -11,11 +11,11 @@ import net.mostlyoriginal.game.manager.FontManager;
  * @author Daan van Yperen
  */
 @Wire
-public class WalletSystem extends VoidEntitySystem {
+public class UIWalletSystem extends VoidEntitySystem {
 
     public Color DARK_SCORE_COLOR;
 
-    public float treasure = 10000;
+    public int treasure = 30;
     private SpriteBatch batch = new SpriteBatch();
     private CameraSystem cameraSystem;
     FontManager fontManager;
@@ -29,5 +29,18 @@ public class WalletSystem extends VoidEntitySystem {
         fontManager.font.draw(batch, treasure + "$", 2, cameraSystem.getPixelHeight() - 2);
 
         batch.end();
+    }
+
+    public boolean pay(int cost) {
+        boolean canAfford = canAfford(cost);
+        if ( canAfford )
+        {
+            treasure -= cost;
+        }
+        return canAfford;
+    }
+
+    public boolean canAfford(int cost) {
+        return cost <= treasure;
     }
 }

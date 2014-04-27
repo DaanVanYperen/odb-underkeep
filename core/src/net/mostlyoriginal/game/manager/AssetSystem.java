@@ -42,6 +42,11 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("spelunker-hurt", 78+26, 34, 13, 17,1);
         add("mage-hurt", 78+39, 32, 13, 19,1);
 
+        add("buy-knight", 156, 36, 13, 15,1);
+        add("buy-spelunker", 169, 36, 13, 15,1);
+        add("buy-mage", 182, 36, 13, 15,1);
+        add("buy-wall", 221, 36, 13, 15,1);
+
         add("marker-monster", 66, 4, 11, 10,1);
         add("marker-gem", 79, 5,  9, 8,1);
         add("marker-gold", 92, 6, 10, 7,1);

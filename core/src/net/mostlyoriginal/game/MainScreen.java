@@ -22,7 +22,8 @@ import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.manager.FontManager;
 import net.mostlyoriginal.game.system.BobbingSystem;
 import net.mostlyoriginal.game.system.CastleSystem;
-import net.mostlyoriginal.game.system.WalletSystem;
+import net.mostlyoriginal.game.system.UICostSystem;
+import net.mostlyoriginal.game.system.UIWalletSystem;
 import net.mostlyoriginal.game.system.agent.*;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 
@@ -103,7 +104,8 @@ public class MainScreen implements Screen {
         //world.setSystem(new MapRenderSystem());
         world.setSystem(new AnimRenderSystem(G.CAMERA_ZOOM_FACTOR));
 
-        world.setSystem(new WalletSystem());
+        world.setSystem(new UIWalletSystem());
+        world.setSystem(new UICostSystem());
 
         world.initialize();
     }

@@ -87,13 +87,13 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "building-trimming-bottom-wall-right":
                 return createTrimming(entity,cx,cy);
             case "expand-knight":
-                return createExpansionOption(cx, cy, "knight", CastleBlock.Type.BARRACKS);
+                return createExpansionOption(cx, cy, "buy-knight", CastleBlock.Type.BARRACKS);
             case "expand-mage":
-                return createExpansionOption(cx, cy, "mage", CastleBlock.Type.TOWER);
+                return createExpansionOption(cx, cy, "buy-mage", CastleBlock.Type.TOWER);
             case "expand-spelunker":
-                return createExpansionOption(cx, cy, "spelunker", CastleBlock.Type.SPELUNKER);
+                return createExpansionOption(cx, cy, "buy-spelunker", CastleBlock.Type.SPELUNKER);
             case "expand-wall":
-                return createExpansionOption(cx, cy, "building-wall", CastleBlock.Type.WALL);
+                return createExpansionOption(cx, cy, "buy-wall", CastleBlock.Type.WALL);
             case "building-hammer":
                 return createExpansionPoint(entity,cx,cy);
 
@@ -139,8 +139,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                         .addComponent(new Angle())
                         .addComponent(new Gravity())
                         .addComponent(new Schedule()
-                                .wait(MathUtils.random(0.1f,0.25f))
-                                .add(new ColorAnimation(new Color(1,1,1,1), new Color(1,1,1,0), Interpolation.linear,0.5f, 0.5f))
+                                .wait(MathUtils.random(0.1f, 0.25f))
+                                .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 0.5f, 0.5f))
                                 .wait(1f)
                                 .deleteFromWorld())
                         .addComponent(phys)
@@ -152,6 +152,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Pos(cx, cy))
                 .addComponent(new Bounds(17, 13))
                 .addComponent(new Clickable())
+                .addComponent(new Focusable())
                 .addComponent(new ExpansionOption(type))
                 .addComponent(new Anim(animId, 13));
     }
@@ -170,7 +171,6 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Bounds(17,13))
                 .addComponent(new CastleBlock())
                 .addComponent(new Clickable())
-                .addComponent(new Focusable())
                 .addComponent(new ExpansionPoint())
                 .addComponent(new Anim(entity, -6));
     }
@@ -353,12 +353,22 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("mouse").addToWorld();
         createEntity("radar",240,26).addToWorld();
 
-        for ( int i =0;i<100;i++) {
-            createEntity("marker-monster", 245 + MathUtils.random(10), 140-i).addToWorld();
+        for ( int i =0;i<20;i++) {
+            createEntity("marker-monster", 245 + MathUtils.random(10), 140-i*5).addToWorld();
         }
         createEntity("marker-gem", 245, 40).addToWorld();
         createEntity("marker-gold", 245, 50).addToWorld();
         createEntity("marker-dungeon", 245, 60).addToWorld();
         createEntity("marker-portal", 245, 70).addToWorld();
+
+
+        int tmpY = (int)(cameraSystem.getPixelHeight() - 18);
+        int tmpX = 60;
+        int stepSize = 14;
+        createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8)).addToWorld();
+        createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25)).addToWorld();
+        createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(50)).addToWorld();
+        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(50)).addToWorld();
+
     }
 }
