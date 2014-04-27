@@ -38,7 +38,7 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("knight", 13, 34, 13, 17, 1);
         add("spelunker", 26, 34, 13, 17,1);
         add("mage", 39, 32, 13, 19,1);
-        add("indicator", 102,66, 17, 21,1);
+        add("indicator", 102,66, 17, 28,1);
         add("queen-hurt", 78, 34, 13, 17,1);
         add("knight-hurt", 78+13, 34, 13, 17, 1);
         add("spelunker-hurt", 78+26, 34, 13, 17,1);

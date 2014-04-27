@@ -57,7 +57,7 @@ public class DirectorSystem  extends VoidEntitySystem {
     }
 
     private int randomRadarY() {
-        return entityFactory.RADAR_Y + 26 + MathUtils.random(214);
+        return entityFactory.RADAR_Y + 26 + MathUtils.random(100);
     }
 
     private int randomRadarX() {

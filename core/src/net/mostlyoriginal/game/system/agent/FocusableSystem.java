@@ -53,7 +53,7 @@ public class FocusableSystem extends EntityProcessingSystem {
             Pos ePos = pm.get(e);
             Pos indicatorPos = pm.get(indicator);
             indicatorPos.x = ePos.x-2;
-            indicatorPos.y = ePos.y-2;
+            indicatorPos.y = ePos.y-10;
             am.get(indicator).visible = true;
         }
     }
