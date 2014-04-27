@@ -15,6 +15,7 @@ import net.mostlyoriginal.game.component.Bobbing;
 import net.mostlyoriginal.game.component.CastleBlock;
 import net.mostlyoriginal.game.component.ExpansionPoint;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
+import net.mostlyoriginal.game.manager.ServantManager;
 
 /**
  * Keeps track of castle model, responsible for assembling and updating the castle.
@@ -36,10 +37,12 @@ public class CastleSystem extends EntityProcessingSystem {
     public int queenLevel = 1; // we always have a queen.
 
     public boolean castleDirty = true;
+    private ServantManager servantManager;
 
     EntityFactorySystem entityFactorySystem;
 
     ComponentMapper<CastleBlock> cm;
+    private Entity[][] actor;
 
     public CastleSystem() {
         super(Aspect.getAspectForAll(CastleBlock.class));
@@ -246,8 +249,13 @@ public class CastleSystem extends EntityProcessingSystem {
     }
 
     private void demolishBlock(int x, int y) {
+
+        servantManager.servantLostHome(x, y);
+
         castle[y][x] = CastleBlock.Type.EMPTY;
         castleDirty=true;
+
+        // kill corresponding actor!
 
         // fling bricks everywhere!
         for ( int i=0,s= MathUtils.random(4,6); i<s;i++) {
@@ -281,6 +289,8 @@ public class CastleSystem extends EntityProcessingSystem {
         if ( x<0 || y<0 || x>=W || y>=H ) return;
         castleDirty=true;
         castle[y][x] = type;
+
+        servantManager.createServant(x, y, type);
     }
 
     /**

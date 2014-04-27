@@ -2,6 +2,7 @@ package net.mostlyoriginal.game.manager;
 
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -41,6 +42,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     private TagManager tagManager;
     private AbstractAssetSystem abstractAssetSystem;
     private CameraSystem cameraSystem;
+    private GroupManager groupManager;
 
     public Entity createEntity(String entity, int cx, int cy) {
         return createEntity(entity,cx,cy, null);
@@ -312,6 +314,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Level(1, type))
                 .addComponent(new Focusable());
 
+        groupManager.add(entity, type);
+
         switch(type)
         {
             case "queen":
@@ -399,10 +403,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("hills",0,0).addToWorld();
         createEntity("lift",211,30).addToWorld();
 
-        createEntity("queen",5, SERVANT_Y).addToWorld();
-        createEntity("knight",25,SERVANT_Y).addToWorld();
-        createEntity("mage",45,SERVANT_Y).addToWorld();
-        createEntity("spelunker",65,SERVANT_Y).addToWorld();
+        createEntity("queen",0, SERVANT_Y).addToWorld();
 
         for ( int i=0; i<20; i++)
         {

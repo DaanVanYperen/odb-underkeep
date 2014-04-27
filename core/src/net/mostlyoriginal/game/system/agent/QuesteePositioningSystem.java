@@ -51,7 +51,7 @@ public class QuesteePositioningSystem extends EntityProcessingSystem {
             pos.x = cameraSystem.getPixelWidth() - 10 - 13 - 20 * countRight;
             countRight++;
         } else {
-            pos.x = OFFSET_X + 20 * countLeft;
+            pos.x = cameraSystem.getPixelWidth() / 2 - (10 * countLeft);
             countLeft++;
         }
 

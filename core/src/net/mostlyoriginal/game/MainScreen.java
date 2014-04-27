@@ -21,6 +21,7 @@ import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.manager.FontManager;
+import net.mostlyoriginal.game.manager.ServantManager;
 import net.mostlyoriginal.game.system.*;
 import net.mostlyoriginal.game.system.agent.*;
 
@@ -41,6 +42,7 @@ public class MainScreen implements Screen {
         world.setManager(new TagManager());
         world.setManager(new FontManager());
         world.setManager(new UuidEntityManager());
+        world.setManager(new ServantManager());
 
         /** UTILITY - PASSIVE */
 
