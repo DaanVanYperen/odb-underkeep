@@ -8,6 +8,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.game.component.Incappable;
 import net.mostlyoriginal.game.component.Taxing;
+import net.mostlyoriginal.game.component.agent.Clickable;
 import net.mostlyoriginal.game.manager.AssetSystem;
 
 /**
@@ -20,8 +21,11 @@ public class QueenTaxSystem extends EntityProcessingSystem {
 
     ComponentMapper<Incappable> dm;
     ComponentMapper<Taxing> tm;
+    ComponentMapper<Clickable> cm;
     UIWalletSystem uiWalletSystem;
     private AssetSystem assetSystem;
+
+    public float clickCooldown  =0;
 
     public QueenTaxSystem() {
         super(Aspect.getAspectForAll(Incappable.class, Taxing.class, Anim.class));
@@ -31,6 +35,17 @@ public class QueenTaxSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
         Incappable incappable = dm.get(e);
+
+        clickCooldown -= world.delta;
+        if ( cm.has(e) && clickCooldown <= 0)
+        {
+            if ( cm.get(e).clicked )
+            {
+                clickCooldown = 0.25f;
+                uiWalletSystem.add(1, e);
+                assetSystem.playSfx("sfx_squeekytoy");
+            }
+        }
 
         if ( !incappable.incapacitated )
         {

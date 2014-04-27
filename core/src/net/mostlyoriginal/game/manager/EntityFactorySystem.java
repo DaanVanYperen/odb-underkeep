@@ -247,6 +247,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 .addComponent(new Pos(cx, cy))
                 .addComponent(new Bounds(10, 10))
                 .addComponent(new Clickable())
+                .addComponent(new ColorAnimation(new Color(1,1,1,0), new Color(1,1,1,1), Interpolation.linear,1f, 1f))
                 .addComponent(questComp)
                 .addComponent(new Anim(entity, entity.equals("marker-monster") ? 53 : 52));
 
@@ -416,14 +417,6 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("indicator").addToWorld();
         createEntity("mouse").addToWorld();
         createEntity("radar", RADAR_X, RADAR_Y).addToWorld();
-
-        //createEntity("marker-gem", 245, 40).addToWorld();
-//        createEntity("marker-gold", 245, 50).addToWorld();
-        createEntity("marker-dungeon",RADAR_X+10, RADAR_Y+75).addToWorld();
-        createEntity("marker-dungeon",RADAR_X+5, RADAR_Y+30).addToWorld();
-        createEntity("marker-portal", RADAR_X+5, RADAR_Y+50).addToWorld();
-        createEntity("marker-portal", RADAR_X+10, RADAR_Y+75).addToWorld();
-
 
         int tmpY = (int)(cameraSystem.getPixelHeight() - 18);
         int tmpX = 120;
