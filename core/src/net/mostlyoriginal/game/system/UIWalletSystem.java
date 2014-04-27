@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.system.camera.CameraSystem;
+import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.manager.FontManager;
 
@@ -28,6 +29,7 @@ public class UIWalletSystem extends VoidEntitySystem {
     private EntityFactorySystem entityFactorySystem;
     private ComponentMapper<Bounds> bm;
     private ComponentMapper<Pos> pm;
+    private AssetSystem assetSystem;
 
 
     @Override

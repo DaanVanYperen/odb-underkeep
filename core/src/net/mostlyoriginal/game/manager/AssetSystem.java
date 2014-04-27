@@ -74,7 +74,17 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("building-trimming-bottom-wall-right",39,119, 13, 17,1);
 
         loadSounds(new String[] {
+                "music",
+                "sfx_click",
+                "sfx_coins",
+                "sfx_dududi",
+                "sfx_rattle",
+                "sfx_squeekytoy",
+                "sfx_stoneonstone",
+                "sfx_tape",
         });
+
+        playMusic("music");
     }
 
 

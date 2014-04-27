@@ -259,11 +259,12 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 physics.vy= 1;
                 physics.friction=0;
                 questEntity.addComponent(physics).addComponent(new Erupt(cameraSystem.getPixelHeight() - 8));
+                questComp.gold = MathUtils.random(3,6);
                 break;
             case "marker-gem":
-                questComp.gold = 25;
+                questComp.gold = 40;
             case "marker-gold":
-                questComp.gold = 10;
+                questComp.gold = 20;
                 break;
             case "marker-dungeon":
                 questComp.dangerous = true;

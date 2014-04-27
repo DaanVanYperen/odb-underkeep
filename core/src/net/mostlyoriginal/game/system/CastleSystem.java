@@ -14,6 +14,7 @@ import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.game.component.Bobbing;
 import net.mostlyoriginal.game.component.CastleBlock;
 import net.mostlyoriginal.game.component.ExpansionPoint;
+import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.manager.ServantManager;
 
@@ -43,6 +44,7 @@ public class CastleSystem extends EntityProcessingSystem {
 
     ComponentMapper<CastleBlock> cm;
     private Entity[][] actor;
+    private AssetSystem assetSystem;
 
     public CastleSystem() {
         super(Aspect.getAspectForAll(CastleBlock.class));
@@ -257,6 +259,8 @@ public class CastleSystem extends EntityProcessingSystem {
 
         // kill corresponding actor!
 
+        assetSystem.playSfx("sfx_click");
+
         // fling bricks everywhere!
         for ( int i=0,s= MathUtils.random(4,6); i<s;i++) {
             int px = CASTLE_X_OFFSET + x * 13 + MathUtils.random(0, 13);
@@ -291,6 +295,7 @@ public class CastleSystem extends EntityProcessingSystem {
         castle[y][x] = type;
 
         servantManager.createServant(x, y, type);
+        assetSystem.playSfx("sfx_dududi");
     }
 
     /**

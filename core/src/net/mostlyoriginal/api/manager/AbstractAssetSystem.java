@@ -18,6 +18,7 @@ public class AbstractAssetSystem extends VoidEntitySystem {
     public HashMap<String, Animation> sprites = new HashMap<String, Animation>();
     public HashMap<String, Sound> sounds = new HashMap<String, Sound>();
     protected float sfxVolume = 0.2f;
+    protected float musicVolume = 0.6f;
 
     public AbstractAssetSystem() {
         tileset = new Texture("tiles.png");
@@ -72,8 +73,19 @@ public class AbstractAssetSystem extends VoidEntitySystem {
         if (sfxVolume > 0 )
         {
             Sound sfx = getSfx(name);
+            if ( sfx != null ) {
+                sfx.stop();
+                sfx.play(sfxVolume, MathUtils.random(1f, 1.04f), 0);
+            }
+        }
+    }
+
+    public void playMusic(String name) {
+        if (sfxVolume > 0 )
+        {
+            Sound sfx = getSfx(name);
             sfx.stop();
-            sfx.play(sfxVolume, MathUtils.random(1f, 1.04f), 0);
+            sfx.loop(musicVolume, MathUtils.random(1f, 1.04f), 0);
         }
     }
 

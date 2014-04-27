@@ -15,6 +15,7 @@ import net.mostlyoriginal.api.utils.SafeEntityReference;
 import net.mostlyoriginal.game.component.Quest;
 import net.mostlyoriginal.game.component.Questee;
 import net.mostlyoriginal.game.component.agent.Clickable;
+import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.system.UIWalletSystem;
 
@@ -36,6 +37,7 @@ public class QuestSystem extends EntityProcessingSystem {
     EntityFactorySystem entityFactorySystem;
 
     UIWalletSystem uiWalletSystem;
+    private AssetSystem assetSystem;
 
     public QuestSystem() {
         super(Aspect.getAspectForAll(Clickable.class, Pos.class, Quest.class, Bounds.class));
@@ -71,8 +73,10 @@ public class QuestSystem extends EntityProcessingSystem {
     private void payoutQuest(Entity e) {
         final Quest quest = qum.get(e);
 
+        assetSystem.playSfx("sfx_squeekytoy");
+
         if (quest.gold > 0) {
-            uiWalletSystem.add(quest.gold);
+            uiWalletSystem.add(quest.gold, e);
         }
 
         if (quest.spawnGold) {

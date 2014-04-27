@@ -14,6 +14,7 @@ import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.component.agent.Clickable;
+import net.mostlyoriginal.game.manager.AssetSystem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +38,7 @@ public class ClickableSystem extends EntitySystem {
 
     private final List<Entity> sortedEntities = new ArrayList<Entity>();
     public boolean sortedDirty = false;
+    private AssetSystem assetSystem;
 
     public ClickableSystem() {
         super(Aspect.getAspectForAll(Clickable.class, Bounds.class, Pos.class, Anim.class));
@@ -80,6 +82,7 @@ public class ClickableSystem extends EntitySystem {
         Clickable clickable = cm.get(e);
         if ( !found && (leftButtonDown && collisionSystem.overlaps(mouse, e)) ) {
             found = clickable.clicked = true;
+            assetSystem.playSfx("sfx_click");
         } else clickable.clicked=false;
     }
 

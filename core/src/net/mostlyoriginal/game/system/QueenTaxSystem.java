@@ -8,6 +8,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.game.component.Incappable;
 import net.mostlyoriginal.game.component.Taxing;
+import net.mostlyoriginal.game.manager.AssetSystem;
 
 /**
  * When the queen is taxin, she's taxin'!
@@ -20,6 +21,7 @@ public class QueenTaxSystem extends EntityProcessingSystem {
     ComponentMapper<Incappable> dm;
     ComponentMapper<Taxing> tm;
     UIWalletSystem uiWalletSystem;
+    private AssetSystem assetSystem;
 
     public QueenTaxSystem() {
         super(Aspect.getAspectForAll(Incappable.class, Taxing.class, Anim.class));
@@ -38,6 +40,7 @@ public class QueenTaxSystem extends EntityProcessingSystem {
             {
                 taxing.cooldown = taxing.interval;
                 uiWalletSystem.add(taxing.tax, e);
+                assetSystem.playSfx("sfx_squeekytoy");
             }
         }
     }
