@@ -227,9 +227,11 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 break;
             case "marker-dungeon":
                 questComp.dangerous = true;
+                questComp.spawnGold = true; // dungeons explode into gold!
                 break;
             case "marker-portal":
                 questComp.dangerous = true;
+                questComp.spawnMonsters = true;
                 break;
         }
 
@@ -273,9 +275,9 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         switch(type)
         {
             case "queen": entity.addComponent(new Damage("queen", "queen-hurt")).addComponent(new Anim("queen", 11)); break;
-            case "knight": entity.addComponent(new Damage("knight", "knight-hurt")).addComponent(new Anim("knight",11)); break;
-            case "mage": entity.addComponent(new Damage("mage", "mage-hurt")).addComponent(new Anim("mage",11)); break;
-            case "spelunker": entity.addComponent(new Damage("spelunker", "spelunker-hurt")).addComponent(new Anim("spelunker",11)); break;
+            case "knight": entity.addComponent(new Damage("knight", "knight-hurt")).addComponent(new Anim("knight", 11)); break;
+            case "mage": entity.addComponent(new Damage("mage", "mage-hurt")).addComponent(new Anim("mage", 11)); break;
+            case "spelunker": entity.addComponent(new Damage("spelunker", "spelunker-hurt")).addComponent(new Anim("spelunker", 11)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }
 
@@ -361,13 +363,12 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("mouse").addToWorld();
         createEntity("radar",240,26).addToWorld();
 
-        for ( int i =0;i<20;i++) {
-            createEntity("marker-monster", 245 + MathUtils.random(10), 140-i*5).addToWorld();
-        }
-        createEntity("marker-gem", 245, 40).addToWorld();
-        createEntity("marker-gold", 245, 50).addToWorld();
+        //createEntity("marker-gem", 245, 40).addToWorld();
+//        createEntity("marker-gold", 245, 50).addToWorld();
+        createEntity("marker-dungeon", 250, 100).addToWorld();
         createEntity("marker-dungeon", 245, 60).addToWorld();
         createEntity("marker-portal", 245, 70).addToWorld();
+        createEntity("marker-portal", 255, 100).addToWorld();
 
 
         int tmpY = (int)(cameraSystem.getPixelHeight() - 18);
