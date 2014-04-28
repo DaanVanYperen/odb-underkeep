@@ -9,6 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
+        config.title = "Underkeep";
         config.resizable = false;
         config.width  = G.CANVAS_WIDTH;
         config.height = G.CANVAS_HEIGHT;
