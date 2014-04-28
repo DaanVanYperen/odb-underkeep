@@ -12,13 +12,10 @@ import net.mostlyoriginal.game.manager.EntityFactorySystem;
 /**
  * Spawns in monsters and treasures. Provides a scaling challenge.
  *
- *
- *
- *
  * @author Daan van Yperen
  */
 @Wire
-public class DirectorSystem  extends VoidEntitySystem {
+public class DirectorSystem extends VoidEntitySystem {
 
 
     public static final int STARTING_PORTAL_INTERVAL = 20;
@@ -28,44 +25,43 @@ public class DirectorSystem  extends VoidEntitySystem {
     public float dungeonInterval = 25;
     public float portalInterval = STARTING_PORTAL_INTERVAL;
 
-    public boolean gameOver =false;
+    public boolean gameOver = false;
 
     private EntityFactorySystem entityFactory;
 
     @Override
     protected void processSystem() {
 
-        if ( gameOver ) return;
+        if (gameOver) return;
 
         dungeonCooldown -= world.delta;
-        if (dungeonCooldown <= 0)
-        {
+        if (dungeonCooldown <= 0) {
             dungeonCooldown = dungeonInterval;
             // slowly increase difficulty.
 
-            if ( MathUtils.random(100) < 25)
-            {
+            if (MathUtils.random(100) < 20) {
                 entityFactory.createEntity("marker-gem", randomRadarX(), randomRadarY()).addToWorld();
+            } else if (MathUtils.random(100) < 50) {
+                entityFactory.createEntity("marker-gold", randomRadarX(), randomRadarY()).addToWorld();
             } else {
                 entityFactory.createEntity("marker-dungeon", randomRadarX(), randomRadarY()).addToWorld();
             }
         }
 
         portalCooldown -= world.delta;
-        if (portalCooldown <= 0)
-        {
+        if (portalCooldown <= 0) {
             portalCooldown = portalInterval;
             // slowly increase difficulty.
-            portalInterval = MathUtils.clamp((portalInterval * 0.95f)-1f, 5, 9999);
+            portalInterval = MathUtils.clamp((portalInterval * 0.95f) - 1f, 5, 9999);
             entityFactory.createEntity("marker-portal", randomRadarX(), randomRadarY())
-                    .addComponent(new Schedule().wait(STARTING_PORTAL_INTERVAL+5f)
+                    .addComponent(new Schedule().wait(STARTING_PORTAL_INTERVAL + 5f)
                             .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 1f, 1f)).deleteFromWorld()).addToWorld();
         }
     }
 
     // portalinterval creates a bit of a buffer early game.
     private int randomRadarY() {
-        return entityFactory.RADAR_Y + 26 + MathUtils.random(85 - (int)(portalInterval*2));
+        return entityFactory.RADAR_Y + 26 + MathUtils.random(85 - (int) (portalInterval * 2));
     }
 
     private int randomRadarX() {
@@ -73,6 +69,6 @@ public class DirectorSystem  extends VoidEntitySystem {
     }
 
     public void gameOver() {
-        gameOver =true;
+        gameOver = true;
     }
 }

@@ -269,9 +269,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 break;
             case "marker-gem":
                 questEntity.addComponent(new Hint("Valuable gem"));
-                questComp.gold = 40;
+                questComp.gold = 30;
+                break;
             case "marker-gold":
-                questComp.gold = 15;
+                questComp.gold = 10;
                 questEntity.addComponent(new Hint("Heap of gold!"));
                 break;
             case "marker-dungeon":
@@ -449,8 +450,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         createEntity("radar", RADAR_X, RADAR_Y).addToWorld();
 
         int tmpY = (int)(cameraSystem.getPixelHeight() - 22);
-        int tmpX = 120;
-        int stepSize = 14;
+        int tmpX = 140;
+        int stepSize = 16;
         createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8,1)).addToWorld();
         createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25,2)).addToWorld();
         createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(40,20)).addToWorld();
