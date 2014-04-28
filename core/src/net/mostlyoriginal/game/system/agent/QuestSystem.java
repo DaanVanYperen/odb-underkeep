@@ -99,23 +99,32 @@ public class QuestSystem extends EntityProcessingSystem {
         }
     }
 
-    private void activateQuestFor(Entity quest, Entity actor) {
+    private void activateQuestFor(Entity questEntity, Entity actor) {
         if (qm.has(actor)) {
             final Questee questee = qm.get(actor);
             if (questee.quest == null || !questee.quest.isActive()) {
+
+                Quest quest = qum.get(questEntity);
+
+                // require fighters to fight dangerous things.
+                if ( !questee.canFight && quest.dangerous ) return;
+
+                // require non-fighters to do non-dangerous things.
+                if ( questee.canFight && !quest.dangerous ) return;
+
                 tagManager.unregister("focus");
                 if ( questee.actionSfx != null ) {
                     assetSystem.playSfx(questee.actionSfx);
                 }
-                questee.quest = new SafeEntityReference(quest);
+                questee.quest = new SafeEntityReference(questEntity);
 
                 // create tracker that indicates travel to the entity.
-                Homing homing = new Homing(new SafeEntityReference(quest), 5, 5);
+                Homing homing = new Homing(new SafeEntityReference(questEntity), 5, 5);
                 homing.speedFactor *=  questee.travelSpeed;
 
                 Entity dot = entityFactorySystem.createEntity("tracker")
                         .addComponent(homing);
-                Pos pos = pm.get(quest);
+                Pos pos = pm.get(questEntity);
                 Pos posDot = pm.get(dot);
                 posDot.x = pos.x + 4;
                 dot.addToWorld();

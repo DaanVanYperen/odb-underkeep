@@ -16,4 +16,6 @@ public class Questee extends Component {
     public float travelSpeed=1;
     public float workSpeed=1;
     public String actionSfx;
+    public boolean canFight = true;
+    public boolean canTreasure = false;
 }

@@ -79,6 +79,7 @@ public class ExpansionPointSystem extends EntityProcessingSystem {
 
     private void attemptBuyAt(ExpansionOption buy, ExpansionPoint point) {
         if ( cost != null && uiWalletSystem.pay(cost.cost) ) {
+            cost.cost += cost.increasePerBuy;
             tagManager.unregister("focus");
             castleSystem.setBlock(point.x, point.y, option.type);
         }

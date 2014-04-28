@@ -37,10 +37,10 @@ public class UIWalletSystem extends VoidEntitySystem {
         batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
         batch.begin();
         batch.setColor(1f, 1f, 1f, 1f);
-        fontManager.font.setColor(1f,1f,1f,1f);
+        fontManager.fontMedium.setColor(1f,1f,1f,1f);
         String strTreasure = treasure + "$";
-        fontManager.font.draw(batch, strTreasure, cameraSystem.getPixelWidth() - 2 -
-                fontManager.font.getBounds(strTreasure).width, cameraSystem.getPixelHeight() - 2);
+        fontManager.fontMedium.draw(batch, strTreasure, cameraSystem.getPixelWidth() - 5 -
+                fontManager.fontMedium.getBounds(strTreasure).width, cameraSystem.getPixelHeight() - 5);
 
         batch.end();
     }

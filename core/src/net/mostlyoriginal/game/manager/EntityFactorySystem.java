@@ -265,13 +265,13 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 physics.vy= 2;
                 physics.friction=0;
                 questEntity.addComponent(physics).addComponent(new Erupt(cameraSystem.getPixelHeight() - 8));
-                questComp.gold = MathUtils.random(3,6);
+                questComp.gold = MathUtils.random(2,4);
                 break;
             case "marker-gem":
                 questEntity.addComponent(new Hint("Valuable gem"));
                 questComp.gold = 40;
             case "marker-gold":
-                questComp.gold = 20;
+                questComp.gold = 15;
                 questEntity.addComponent(new Hint("Heap of gold!"));
                 break;
             case "marker-dungeon":
@@ -335,7 +335,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 questee.actionSfx = null;
                 entity
                         .addComponent(new Taxing())
-                        .addComponent(new Incappable("queen", "queen-hurt", 5))
+                        .addComponent(new Incappable("queen", "queen-hurt", 3.5f))
                         .addComponent(new Hint("The queen, generates coins when undamaged."))
                         .addComponent(new Anim("queen", 13)); break;
             case "knight":
@@ -351,11 +351,13 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                     questee.workSpeed *= 4f;
                     questee.actionSfx = "sfx_hocuspocus";
                     entity
-                       .addComponent(new Incappable("mage", "mage-hurt",10))
+                       .addComponent(new Incappable("mage", "mage-hurt",20))
                        .addComponent(new Hint("The mage, slow healer, fast mover!"))
                        .addComponent(new Anim("mage", 13)); break;
             case "spelunker":
                     questee.actionSfx = "sfx_treasure";
+                    questee.canFight = false;
+                    questee.canTreasure = true;
                     entity
                        .addComponent(new Incappable("spelunker", "spelunker-hurt",5))
                        .addComponent(new Hint("Spelunker. Gathers treasures!"))
@@ -449,10 +451,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         int tmpY = (int)(cameraSystem.getPixelHeight() - 22);
         int tmpX = 120;
         int stepSize = 14;
-        createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8)).addToWorld();
-        createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25)).addToWorld();
-        createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(40)).addToWorld();
-        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(80)).addToWorld();
+        createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8,1)).addToWorld();
+        createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25,2)).addToWorld();
+        createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(40,20)).addToWorld();
+        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(80,80)).addToWorld();
 
     }
 }

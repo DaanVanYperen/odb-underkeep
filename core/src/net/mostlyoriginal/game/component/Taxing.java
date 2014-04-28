@@ -6,7 +6,7 @@ import com.artemis.Component;
  * @author Daan van Yperen
  */
 public class Taxing extends Component {
-    public float cooldown = 4;
-    public float interval = 4;
+    public float cooldown = 6;
+    public float interval = 6;
     public int tax = 5;
 }
