@@ -41,7 +41,7 @@ public class QueenTaxSystem extends EntityProcessingSystem {
         {
             if ( cm.get(e).clicked )
             {
-                clickCooldown = 0.25f;
+                clickCooldown = 0.5f;
                 uiWalletSystem.add(1, e);
                 assetSystem.playSfx("sfx_squeekytoy");
             }
