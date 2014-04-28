@@ -11,6 +11,7 @@ import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.system.camera.CameraSystem;
+import net.mostlyoriginal.game.component.Incappable;
 import net.mostlyoriginal.game.component.Level;
 import net.mostlyoriginal.game.component.agent.Focusable;
 import net.mostlyoriginal.game.manager.FontManager;
@@ -29,6 +30,7 @@ public class UILevelSystem extends EntityProcessingSystem {
     ComponentMapper<Focusable> fm;
     ComponentMapper<Pos> pm;
     ComponentMapper<Bounds> bm;
+    ComponentMapper<Incappable> im;
     ComponentMapper<Level> lm;
 
     public UILevelSystem() {
@@ -64,7 +66,7 @@ public class UILevelSystem extends EntityProcessingSystem {
         batch.setColor(1f, 1f, 1f, 1f);
         fontManager.font.setColor(1f,1f,1f,1f);
 
-        String msg = "l" + level.level;
+        String msg = im.has(e) & im.get(e).incapacitated ? "Zz" : "L1";
         fontManager.font.setColor(1f,1f,1f, anim.color.a);
         fontManager.font.draw(batch, msg, pos.x + bounds.cx() - fontManager.font.getBounds(msg).width/2 - 1, pos.y - 2);
     }

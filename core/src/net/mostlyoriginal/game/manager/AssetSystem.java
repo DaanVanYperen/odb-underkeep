@@ -27,6 +27,8 @@ public class AssetSystem extends net.mostlyoriginal.api.manager.AbstractAssetSys
         add("hills", 78, 296, 284, 36,1);
         add("radar", 1, 193, 68, 130,1);
 
+        add("clickme", 169, 17, 7, 17,3);
+
         add("lift-frame", 0, 0, 23, 25,1);
         add("lift-cage", 23, 4, 17, 21,1);
         add("lift-dot", 156, 13, 4, 4,1);

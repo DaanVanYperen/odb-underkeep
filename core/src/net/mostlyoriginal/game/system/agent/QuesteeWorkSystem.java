@@ -102,7 +102,7 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
 
     private void workOnQuest(Entity actor, Quest quest) {
         Questee questee = qm.get(actor);
-        quest.workRemaining -= world.delta * questee.workSpeed;
+        quest.workRemaining -= world.delta * questee.workSpeed * 1.4f;
         if ( quest.dangerous )
         {
             // create damage effect in the last second.

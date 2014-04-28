@@ -18,6 +18,7 @@ public class Quest extends Component {
     public float monsterSpawnDelayMax = 20;
     public float monsterSpawnCooldown;
     public boolean workable=true;
+    public boolean freeForAll=false;
 
     public Quest(String type) {
         this.type = type;

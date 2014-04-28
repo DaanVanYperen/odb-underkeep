@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.physics.Homing;
+import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.utils.SafeEntityReference;
 import net.mostlyoriginal.game.component.Quest;
 import net.mostlyoriginal.game.component.Questee;
@@ -32,6 +33,7 @@ public class QuestSystem extends EntityProcessingSystem {
     ComponentMapper<Questee> qm;
     ComponentMapper<Quest> qum;
     ComponentMapper<Pos> pm;
+    ComponentMapper<Physics> ym;
     TagManager tagManager;
 
     Vector2 vTmp = new Vector2();
@@ -89,8 +91,10 @@ public class QuestSystem extends EntityProcessingSystem {
 
         if (quest.spawnGold) {
             Pos pos = pm.get(e);
+            int r = MathUtils.random(0, 360);
             for (int i = 0, s = 3; i < s; i++) {
-                vTmp.set(9, 0).setAngle(MathUtils.random(0, 360));
+                vTmp.set(3, 0).setAngle(r);
+                r += 120;
 
                 entityFactorySystem.createEntity(
                         "marker-gold",
@@ -106,11 +110,27 @@ public class QuestSystem extends EntityProcessingSystem {
 
                 Quest quest = qum.get(questEntity);
 
-                // require fighters to fight dangerous things.
-                if ( !questee.canFight && quest.dangerous ) return;
+                // anyone can do these.
+                if ( !quest.freeForAll) {
+                    // require fighters to fight dangerous things.
+                    if (!questee.canFight && quest.dangerous) return;
 
-                // require non-fighters to do non-dangerous things.
-                if ( questee.canFight && !quest.dangerous ) return;
+                    // require non-fighters to do non-dangerous things.
+                    if (questee.canFight && !quest.dangerous) return;
+                }
+
+                // descend the elevator!
+                Entity lift = tagManager.getEntity("lift");
+                if ( lift != null && pm.has(lift) )
+                {
+                    Pos pos = pm.get(lift);
+                    pos.x = 251+3;
+                    pos.y = 30;
+
+                    Physics phys = ym.get(lift);
+                    phys.vx=0;
+                    phys.vy=0;
+                }
 
                 tagManager.unregister("focus");
                 if ( questee.actionSfx != null ) {
@@ -119,7 +139,7 @@ public class QuestSystem extends EntityProcessingSystem {
                 questee.quest = new SafeEntityReference(questEntity);
 
                 // create tracker that indicates travel to the entity.
-                Homing homing = new Homing(new SafeEntityReference(questEntity), 5, 5);
+                Homing homing = new Homing(new SafeEntityReference(questEntity), 3, 3);
                 homing.speedFactor *=  questee.travelSpeed;
 
                 Entity dot = entityFactorySystem.createEntity("tracker")

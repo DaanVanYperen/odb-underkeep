@@ -21,7 +21,7 @@ public class UIWalletSystem extends VoidEntitySystem {
 
     public Color DARK_SCORE_COLOR;
 
-    public int treasure = 0;
+    public int treasure = 5;
     private SpriteBatch batch = new SpriteBatch();
     private CameraSystem cameraSystem;
     FontManager fontManager;

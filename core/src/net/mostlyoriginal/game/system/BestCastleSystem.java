@@ -57,6 +57,7 @@ public class BestCastleSystem extends VoidEntitySystem {
             // game over!
             uiTitleSystem.setMessage("Game Over", "Keep Rank: " + bestValue, valueToRank(bestValue),999 );
             uiTitleSystem.sub3 = "Press space to retry";
+            uiTitleSystem.offsetY = 35;
             restoreBestCastle();
             directorSystem.gameOver();
             world.getSystem(QueenTaxSystem.class).setEnabled(false);

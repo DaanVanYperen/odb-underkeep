@@ -278,6 +278,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
             case "marker-dungeon":
                 questEntity.addComponent(new Hint("Dungeon"));
                 questComp.dangerous = true;
+                questComp.freeForAll = true;
                 questComp.spawnGold = true; // dungeons explode into gold!
                 break;
             case "marker-portal":
@@ -335,6 +336,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 questee.workSpeed *= 2f;
                 questee.actionSfx = null;
                 entity
+                        .addComponent(new Tutorial(0, "click"))
                         .addComponent(new Taxing())
                         .addComponent(new Incappable("queen", "queen-hurt", 3.5f))
                         .addComponent(new Hint("The queen, generates coins when undamaged."))
@@ -432,11 +434,14 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         super.initialize();
         createEntity("background",0,0).addToWorld();
         createEntity("hills",0,0).addToWorld();
-        createEntity("lift",251,30).addToWorld();
+        Entity lift = createEntity("lift", 251, 30).addComponent(new Physics()).addComponent(new Gravity(-5.0f));
+        tagManager.register("lift", lift);
+        lift.addToWorld();
 
         createEntity("queen",0, SERVANT_Y).addToWorld();
 
-        createEntity("marker-monster", RADAR_X+10, RADAR_Y +60).addToWorld();
+        createEntity("marker-monster", RADAR_X+10, RADAR_Y +60)
+                .addComponent(new Tutorial(1, "click")).addToWorld();
 
         for ( int i=0; i<20; i++)
         {
@@ -452,10 +457,11 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         int tmpY = (int)(cameraSystem.getPixelHeight() - 22);
         int tmpX = 140;
         int stepSize = 16;
-        createEntity("expand-wall", tmpX, tmpY).addComponent(new Cost(8,1)).addToWorld();
+        createEntity("expand-wall", tmpX, tmpY)
+                .addComponent(new Tutorial(2, "click")).addComponent(new Cost(8, 1)).addToWorld();
         createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25,2)).addToWorld();
         createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(40,20)).addToWorld();
-        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(80,80)).addToWorld();
+        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(80, 80)).addToWorld();
 
     }
 }
