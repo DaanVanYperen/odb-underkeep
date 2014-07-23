@@ -417,7 +417,7 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     private Anim staticRandomizedAnim(String animId) {
         Anim anim = new Anim(animId, 1);
         anim.speed=0;
-        anim.age= MathUtils.random(0, abstractAssetSystem.get(animId).animationDuration); // start at random cell.
+        anim.age= MathUtils.random(0, abstractAssetSystem.get(animId).getAnimationDuration()); // start at random cell.
         return anim;
     }
 
