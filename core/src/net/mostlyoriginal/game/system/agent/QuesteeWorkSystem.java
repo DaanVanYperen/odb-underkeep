@@ -49,7 +49,7 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
         {
             // disable after  game over.
             if ( clm.has(e)) {
-                e.removeComponent(Clickable.class).changedInWorld();
+                e.edit().remove(Clickable.class);
             }
             return;
         }
@@ -72,7 +72,7 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
                 if ( fm.has(e))
                 {
 
-                    e.removeComponent(Focusable.class).changedInWorld();
+                    e.edit().remove(Focusable.class);
                 }
             } else {
 
@@ -84,7 +84,7 @@ public class QuesteeWorkSystem extends EntityProcessingSystem {
                         surfaceTracker(tracker);
                     }
 
-                    e.addComponent(new Focusable()).changedInWorld();
+                    e.edit().add(new Focusable());
                 }
             }
         }

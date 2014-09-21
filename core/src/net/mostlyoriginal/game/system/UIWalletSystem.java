@@ -72,7 +72,7 @@ public class UIWalletSystem extends VoidEntitySystem {
             int y = (int)(pm.get(source).y + bm.get(source).cy());
 
             for ( int i=0,s=Math.min(10,gold);i<s;i++) {
-                entityFactorySystem.createEntity("particle-coin", x, y).addToWorld();
+                entityFactorySystem.createEntity("particle-coin", x, y);
             }
         }
     }

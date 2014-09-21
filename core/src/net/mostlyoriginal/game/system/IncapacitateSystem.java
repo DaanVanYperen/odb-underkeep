@@ -39,7 +39,7 @@ public class IncapacitateSystem extends EntityProcessingSystem {
         anim.color.a = incappable.incapacitated && !onQuest ? 0.6f : 1.0f;
 
         // don't allow focus during damage.
-        if (incappable.incapacitated && fm.has(e)) e.removeComponent(Focusable.class).changedInWorld();
+        if (incappable.incapacitated && fm.has(e)) e.edit().remove(Focusable.class);
 
         // not currently on quest.
         if (!onQuest) {
@@ -51,7 +51,7 @@ public class IncapacitateSystem extends EntityProcessingSystem {
 
                 // allow focus after damage has been resolved.
                 if (!fm.has(e)) {
-                    e.addComponent(new Focusable()).changedInWorld();
+                    e.edit().add(new Focusable());
                 }
             }
 

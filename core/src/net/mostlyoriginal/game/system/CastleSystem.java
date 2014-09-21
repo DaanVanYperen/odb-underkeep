@@ -74,9 +74,9 @@ public class CastleSystem extends EntityProcessingSystem {
         if ( castleDirty) {
             if ( cm.get(e).fadeoutOnReplace )
             {
-                e.addComponent(new Schedule().wait(1f).deleteFromWorld())
-                        .addComponent(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 1f, 1f))
-                        .changedInWorld();
+                e.edit().add(new Schedule().wait(1f).deleteFromWorld())
+                        .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 1f, 1f))
+                        ;
             } else {
                 e.deleteFromWorld();
             }
@@ -104,27 +104,27 @@ public class CastleSystem extends EntityProcessingSystem {
                 if ( isEmptyAt(x,y) || isTowerAt(x,y))
                 {
                     // top wall trimming.
-                    if ( isWallAt(x, y-1) ) entityFactorySystem.createEntity("building-trimming-on-wall", px, py).addToWorld();
-                    else if ( isWallAt(x+1, y-1) && !isWallAt(x+1, y) ) entityFactorySystem.createEntity("building-trimming-on-wall-left", px, py).addToWorld();
-                    else if ( isWallAt(x-1, y-1) && !isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-on-wall-right", px, py).addToWorld();
+                    if ( isWallAt(x, y-1) ) entityFactorySystem.createEntity("building-trimming-on-wall", px, py);
+                    else if ( isWallAt(x+1, y-1) && !isWallAt(x+1, y) ) entityFactorySystem.createEntity("building-trimming-on-wall-left", px, py);
+                    else if ( isWallAt(x-1, y-1) && !isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-on-wall-right", px, py);
 
                     // side wall trimming left side
-                    if ( isWallAt(x+1, y) && isWallAt(x+1, y+1) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-left", px, py).addToWorld();
-                    else if ( isWallAt(x+1, y) ) entityFactorySystem.createEntity("building-trimming-top-wall-left", px, py).addToWorld();
+                    if ( isWallAt(x+1, y) && isWallAt(x+1, y+1) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-left", px, py);
+                    else if ( isWallAt(x+1, y) ) entityFactorySystem.createEntity("building-trimming-top-wall-left", px, py);
 
                     // side wall trimming right side.
-                    if ( isWallAt(x-1, y) && isWallAt(x-1, y+1) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-right", px, py).addToWorld();
-                    else if ( isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-top-wall-right", px, py).addToWorld();
+                    if ( isWallAt(x-1, y) && isWallAt(x-1, y+1) ) entityFactorySystem.createEntity("building-trimming-bottom-wall-right", px, py);
+                    else if ( isWallAt(x-1, y) ) entityFactorySystem.createEntity("building-trimming-top-wall-right", px, py);
 
                     // tower spire.
                     if ( isTowerAt(x, y-1) && !isTowerAt(x,y) ) {
-                        entityFactorySystem.createEntity("building-trimming-on-tower", px, py).addToWorld();
+                        entityFactorySystem.createEntity("building-trimming-on-tower", px, py);
                         if ( y >= BIRD_SPAWN_LEVEL ) spawnBirdsOfDoom(px, py);
                     }
 
                     if ( (isWallAt(x, y-1) && !isWallAt(x, y)) || (isTowerAt(x,y-2) && !isTowerAt(x,y-1)))
                     {
-                        entityFactorySystem.createEntity("building-flag", px, py).addToWorld();
+                        entityFactorySystem.createEntity("building-flag", px, py);
                     }
                 }
             }
@@ -139,8 +139,8 @@ public class CastleSystem extends EntityProcessingSystem {
             bobbing.age = MathUtils.random(0f,1f);
             entityFactorySystem
                     .createEntity("bird")
-                    .addComponent(bobbing)
-                    .addToWorld();
+                    .edit().add(bobbing)
+                    ;
         }
     }
 
@@ -170,8 +170,6 @@ public class CastleSystem extends EntityProcessingSystem {
                             point.y = y;
                             point.allowWalls = supportForWall;
                             point.allowTowers = supportForTower;
-
-                            e.addToWorld();
                         }
                     }
                 }
@@ -212,18 +210,18 @@ public class CastleSystem extends EntityProcessingSystem {
                     case EMPTY:
                         break;
                     case WALL:
-                        entityFactorySystem.createEntity("building-wall", px, py).addToWorld();
+                        entityFactorySystem.createEntity("building-wall", px, py);
                         break;
                     case BARRACKS:
-                        entityFactorySystem.createEntity("building-barracks", px, py).addToWorld();
+                        entityFactorySystem.createEntity("building-barracks", px, py);
                         knightLevel++;
                         break;
                     case SPELUNKER:
-                        entityFactorySystem.createEntity("building-spelunker", px, py).addToWorld();
+                        entityFactorySystem.createEntity("building-spelunker", px, py);
                         spelunkerLevel++;
                         break;
                     case TOWER:
-                        entityFactorySystem.createEntity("building-tower", px, py).addToWorld();
+                        entityFactorySystem.createEntity("building-tower", px, py);
                         mageLevel++;
                         break;
                 }
@@ -269,7 +267,7 @@ public class CastleSystem extends EntityProcessingSystem {
         for ( int i=0,s= MathUtils.random(4,6); i<s;i++) {
             int px = CASTLE_X_OFFSET + x * 13 + MathUtils.random(0, 13);
             int py = 30 + y * 17 + MathUtils.random(0,17);
-            entityFactorySystem.createEntity("particle-debris", px, py).addToWorld();
+            entityFactorySystem.createEntity("particle-debris", px, py);
         }
     }
 

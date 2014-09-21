@@ -65,9 +65,9 @@ public class UICostSystem extends EntityProcessingSystem {
         anim.color.a = canAfford ? 1.0f : 0.5f;
 
         // disable selection when cannot afford.
-        if ( !canAfford && fm.has(e) ) e.removeComponent(Focusable.class).changedInWorld();
+        if ( !canAfford && fm.has(e) ) e.edit().remove(Focusable.class);
         // enable selection when can afford.
-        if ( canAfford && !fm.has(e) ) e.addComponent(new Focusable()).changedInWorld();
+        if ( canAfford && !fm.has(e) ) e.edit().add(new Focusable());
 
         String msg = "" + cost.cost;
         fontManager.font.setColor(1f,1f,1f, anim.color.a);

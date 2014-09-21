@@ -102,7 +102,7 @@ public class PluckableSystem extends EntityProcessingSystem {
                     Pos pos = om.get(player.get());
                     Bounds bounds = bm.get(player.get());
                     //for (int i=0; i<3; i++)
-                    //entityFactorySystem.createSweat((int)(pos.x + bounds.maxx * (playerAnim.flippedX ? 0.8f : 0.2f )), (int)(pos.y + bounds.cy()),"particle-sweat").addToWorld();
+                    //entityFactorySystem.createSweat((int)(pos.x + bounds.maxx * (playerAnim.flippedX ? 0.8f : 0.2f )), (int)(pos.y + bounds.cy()),"particle-sweat");
                 }
 
                 // pluckkkkkk
@@ -122,7 +122,7 @@ public class PluckableSystem extends EntityProcessingSystem {
                     physicsSystem.push(e,90,100);
                     physicsSystem.push(player.get(), playerAnim.flippedX ? 180 : 0,80);
 
-                    e.removeComponent(Frozen.class).removeComponent(Pluckable.class).changedInWorld();
+                    e.edit().remove(Frozen.class).remove(Pluckable.class);
                 }
 
             } else pluckingCooldown = 0;

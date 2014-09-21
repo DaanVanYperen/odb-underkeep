@@ -1,6 +1,6 @@
 Underkeep
 =========
-LibGDX 1.0.0 + Artemis-odb jam game created in 48 hours for the [Ludum Dare](http://www.ludumdare.com/compo/ludum-dare-29/?action=preview&uid=22396).
+LibGdx 1.2.0 + Artemis-odb 1.6.5 jam game created in 48 hours for the [Ludum Dare](http://www.ludumdare.com/compo/ludum-dare-29/?action=preview&uid=22396).
 
 [Play (Web)](http://www.mostlyoriginal.net/play-underkeep/)
 

@@ -1,6 +1,7 @@
 package net.mostlyoriginal.game.manager;
 
 import com.artemis.Entity;
+import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
@@ -96,16 +97,16 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 return createTrimming(entity,cx,cy);
             case "expand-knight":
                 return createExpansionOption(cx, cy, "buy-knight", CastleBlock.Type.BARRACKS)
-                        .addComponent(new Hint("Barracks, extra knight."));
+                        .add(new Hint("Barracks, extra knight.")).getEntity();
             case "expand-mage":
                 return createExpansionOption(cx, cy, "buy-mage", CastleBlock.Type.TOWER)
-                        .addComponent(new Hint("Mage tower, extra mage."));
+                        .add(new Hint("Mage tower, extra mage.")).getEntity();
             case "expand-spelunker":
                 return createExpansionOption(cx, cy, "buy-spelunker", CastleBlock.Type.SPELUNKER)
-                        .addComponent(new Hint("Workshop, extra spelunker."));
+                        .add(new Hint("Workshop, extra spelunker.")).getEntity();
             case "expand-wall":
                 return createExpansionOption(cx, cy, "buy-wall", CastleBlock.Type.WALL)
-                        .addComponent(new Hint("Wall, cheap reinforcement"));
+                        .add(new Hint("Wall, cheap reinforcement")).getEntity();
             case "building-hammer":
                 return createExpansionPoint(entity,cx,cy);
 
@@ -115,10 +116,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     }
 
     private Entity createTracker(int cx, int cy) {
-        return world.createEntity().addComponent(new Pos(cx,cy))
-                .addComponent(new Anim("lift-dot",51))
-                .addComponent(new Physics())
-                .addComponent(new Bounds(2, 2));
+        return world.createEntity().edit().add(new Pos(cx, cy))
+                .add(new Anim("lift-dot", 51))
+                .add(new Physics())
+                .add(new Bounds(2, 2)).getEntity();
     }
 
     private Entity createJumpingImp(int cx, int cy) {
@@ -131,14 +132,15 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         phys.friction = 1f;
 
         return world.createEntity()
-                        .addComponent(new Pos(cx, cy))
-                        .addComponent(new Bounds(10, 10))
-                        .addComponent(new Angle())
-                        .addComponent(new Gravity())
-                        .addComponent(new ColorAnimation(new Color(1,1,1,1), new Color(1,1,1,0), Interpolation.linear,1f, 1f))
-                        .addComponent(new Schedule().wait(1f).deleteFromWorld())
-                        .addComponent(phys)
-                        .addComponent(new Anim("marker-monster", 9));
+		        .edit()
+                        .add(new Pos(cx, cy))
+                        .add(new Bounds(10, 10))
+                        .add(new Angle())
+                        .add(new Gravity())
+                        .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 1f, 1f))
+                        .add(new Schedule().wait(1f).deleteFromWorld())
+                        .add(phys)
+                        .add(new Anim("marker-monster", 9)).getEntity();
     }
 
     private Entity createParticleDebris(int cx, int cy) {
@@ -153,17 +155,18 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         Anim anim = staticRandomizedAnim("particle-debris");
         anim.layer=9;
         return world.createEntity()
-                        .addComponent(new Pos(cx, cy))
-                        .addComponent(new Bounds(6,5))
-                        .addComponent(new Angle())
-                        .addComponent(new Gravity())
-                        .addComponent(new Schedule()
-                                .wait(MathUtils.random(0.1f, 0.25f))
-                                .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 0.5f, 0.5f))
-                                .wait(1f)
-                                .deleteFromWorld())
-                        .addComponent(phys)
-                        .addComponent(anim);
+		        .edit()
+                        .add(new Pos(cx, cy))
+                        .add(new Bounds(6, 5))
+                        .add(new Angle())
+                        .add(new Gravity())
+                        .add(new Schedule()
+		                        .wait(MathUtils.random(0.1f, 0.25f))
+		                        .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 0.5f, 0.5f))
+		                        .wait(1f)
+		                        .deleteFromWorld())
+                        .add(phys)
+                        .add(anim).getEntity();
     }
 
     private Entity createParticleCoin(int cx, int cy) {
@@ -177,56 +180,60 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         Anim anim = staticRandomizedAnim("particle-coin");
         anim.layer=200;
-        return world.createEntity()
-                        .addComponent(new Pos(cx, cy))
-                        .addComponent(new Bounds(6,5))
-                        .addComponent(new Angle())
-                        .addComponent(new Gravity())
-                        .addComponent(new Schedule()
+        return world.createEntity().edit()
+                        .add(new Pos(cx, cy))
+                        .add(new Bounds(6,5))
+                        .add(new Angle())
+                        .add(new Gravity())
+                        .add(new Schedule()
                                 .wait(MathUtils.random(0.1f, 0.25f))
                                 .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 0.5f, 0.5f))
                                 .wait(1f)
                                 .deleteFromWorld())
-                        .addComponent(phys)
-                        .addComponent(anim);
+                        .add(phys)
+                        .add(anim).getEntity();
     }
 
-    private Entity createExpansionOption(int cx, int cy, String animId, CastleBlock.Type type) {
+    private EntityEdit createExpansionOption(int cx, int cy, String animId, CastleBlock.Type type) {
         return world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(17, 13))
-                .addComponent(new Clickable())
-                .addComponent(new Focusable())
-                .addComponent(new ExpansionOption(type))
-                .addComponent(new Anim(animId, 13));
+		        .edit()
+                .add(new Pos(cx, cy))
+                .add(new Bounds(17, 13))
+                .add(new Clickable())
+                .add(new Focusable())
+                .add(new ExpansionOption(type))
+                .add(new Anim(animId, 13));
     }
 
     private Entity createTrimming(String entity, int cx, int cy) {
         return world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(17, 13))
-                .addComponent(new CastleBlock())
-                .addComponent(new Anim(entity, -5));
+		        .edit()
+                .add(new Pos(cx, cy))
+                .add(new Bounds(17, 13))
+                .add(new CastleBlock())
+                .add(new Anim(entity, -5)).getEntity();
     }
 
     private Entity createExpansionPoint(String entity, int cx, int cy) {
         return world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(17,13))
-                .addComponent(new CastleBlock())
-                .addComponent(new Clickable())
-                .addComponent(new ExpansionPoint())
-                .addComponent(new Anim(entity, -6));
+		        .edit()
+                .add(new Pos(cx, cy))
+                .add(new Bounds(17, 13))
+                .add(new CastleBlock())
+                .add(new Clickable())
+                .add(new ExpansionPoint())
+                .add(new Anim(entity, -6)).getEntity();
     }
 
     private Entity createBlock(String entity, int cx, int cy) {
         Anim anim = staticRandomizedAnim(entity);
         anim.layer=-10;
         return world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(17,13))
-                .addComponent(new CastleBlock())
-                .addComponent(anim);
+		        .edit()
+                .add(new Pos(cx, cy))
+                .add(new Bounds(17, 13))
+                .add(new CastleBlock())
+                .add(anim).getEntity();
 
 
         //add("building-hammer", 0,51, 13, 17,1);
@@ -247,42 +254,42 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
     private Entity createQuest(String entity, int cx, int cy) {
         Quest questComp = new Quest(entity);
-        Entity questEntity = world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(10, 10))
-                .addComponent(new Clickable())
-                .addComponent(new ColorAnimation(new Color(1,1,1,0), new Color(1,1,1,1), Interpolation.linear,1f, 1f))
-                .addComponent(questComp)
-                .addComponent(new Anim(entity, entity.equals("marker-monster") ? 53 : 52));
+        Entity questEntity = world.createEntity().edit()
+                .add(new Pos(cx, cy))
+                .add(new Bounds(10, 10))
+                .add(new Clickable())
+                .add(new ColorAnimation(new Color(1,1,1,0), new Color(1,1,1,1), Interpolation.linear,1f, 1f))
+                .add(questComp)
+                .add(new Anim(entity, entity.equals("marker-monster") ? 53 : 52)).getEntity();;
 
         switch(entity)
         {
             case "marker-monster":
-                questEntity.addComponent(new Hint("Approaching Imp."));
+                questEntity.edit().add(new Hint("Approaching Imp."));
                 // monsters slowly ascend.
                 questComp.dangerous = true;
                 Physics physics = new Physics();
                 physics.vy= 2;
                 physics.friction=0;
-                questEntity.addComponent(physics).addComponent(new Erupt(cameraSystem.getPixelHeight() - 8));
+                questEntity.edit().add(physics).add(new Erupt(cameraSystem.getPixelHeight() - 8));
                 questComp.gold = MathUtils.random(2,4);
                 break;
             case "marker-gem":
-                questEntity.addComponent(new Hint("Valuable gem"));
+                questEntity.edit().add(new Hint("Valuable gem"));
                 questComp.gold = 30;
                 break;
             case "marker-gold":
                 questComp.gold = 10;
-                questEntity.addComponent(new Hint("Heap of gold!"));
+                questEntity.edit().add(new Hint("Heap of gold!"));
                 break;
             case "marker-dungeon":
-                questEntity.addComponent(new Hint("Dungeon"));
+                questEntity.edit().add(new Hint("Dungeon"));
                 questComp.dangerous = true;
                 questComp.freeForAll = true;
                 questComp.spawnGold = true; // dungeons explode into gold!
                 break;
             case "marker-portal":
-                questEntity.addComponent(new Hint("Portal"));
+                questEntity.edit().add(new Hint("Portal"));
                 questComp.workable=false;
                 questComp.dangerous = true;
                 questComp.spawnMonsters = true;
@@ -294,15 +301,15 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
     private Entity createRadar(int cx, int cy) {
         return world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Anim("radar", 50));
+		        .edit().add(new Pos(cx, cy))
+                .add(new Anim("radar", 50)).getEntity();
     }
 
     private Entity createMouse() {
         Entity mouse = world.createEntity()
-                .addComponent(new Pos())
-                .addComponent(new Bounds(1,1))
-                .addComponent(new MouseCursor());
+		        .edit().add(new Pos())
+                .add(new Bounds(1, 1))
+                .add(new MouseCursor()).getEntity();
         tagManager.register("mouse", mouse);
         return mouse;
     }
@@ -311,8 +318,8 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         Anim anim = new Anim("indicator",12);
         anim.visible=false;
         Entity indicator = world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(anim);
+		        .edit().add(new Pos(cx, cy))
+                .add(anim).getEntity();
         tagManager.register("indicator",indicator);
         return indicator;
     }
@@ -321,12 +328,12 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
 
         Questee questee = new Questee();
         Entity entity = world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(17,13))
-                .addComponent(new Clickable())
-                .addComponent(questee)
-                .addComponent(new Level(1, type))
-                .addComponent(new Focusable());
+		        .edit().add(new Pos(cx, cy))
+                .add(new Bounds(17, 13))
+                .add(new Clickable())
+                .add(questee)
+                .add(new Level(1, type))
+                .add(new Focusable()).getEntity();
 
         groupManager.add(entity, type);
 
@@ -336,35 +343,35 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
                 questee.workSpeed *= 2f;
                 questee.actionSfx = null;
                 entity
-                        .addComponent(new Tutorial(0, "click"))
-                        .addComponent(new Taxing())
-                        .addComponent(new Incappable("queen", "queen-hurt", 3.5f))
-                        .addComponent(new Hint("The queen, generates coins when undamaged."))
-                        .addComponent(new Anim("queen", 13)); break;
+		                .edit().add(new Tutorial(0, "click"))
+                        .add(new Taxing())
+                        .add(new Incappable("queen", "queen-hurt", 3.5f))
+                        .add(new Hint("The queen, generates coins when undamaged."))
+                        .add(new Anim("queen", 13)); break;
             case "knight":
                     questee.travelSpeed *= 0.35f;
                     questee.workSpeed *= 1.5f;
                 questee.actionSfx = "sfx_foryou";
                     entity
-                    .addComponent(new Hint("The knight, heals fast, moves slow."))
-                    .addComponent(new Incappable("knight", "knight-hurt", 2))
-                    .addComponent(new Anim("knight", 13)); break;
+		                    .edit().add(new Hint("The knight, heals fast, moves slow."))
+                    .add(new Incappable("knight", "knight-hurt", 2))
+                    .add(new Anim("knight", 13)); break;
             case "mage":
                     questee.travelSpeed *= 4f;
                     questee.workSpeed *= 4f;
                     questee.actionSfx = "sfx_hocuspocus";
                     entity
-                       .addComponent(new Incappable("mage", "mage-hurt",20))
-                       .addComponent(new Hint("The mage, slow healer, fast mover!"))
-                       .addComponent(new Anim("mage", 13)); break;
+		                    .edit().add(new Incappable("mage", "mage-hurt", 20))
+                       .add(new Hint("The mage, slow healer, fast mover!"))
+                       .add(new Anim("mage", 13)); break;
             case "spelunker":
                     questee.actionSfx = "sfx_treasure";
                     questee.canFight = false;
                     questee.canTreasure = true;
                     entity
-                       .addComponent(new Incappable("spelunker", "spelunker-hurt",5))
-                       .addComponent(new Hint("Spelunker. Gathers treasures!"))
-                       .addComponent(new Anim("spelunker", 13)); break;
+		                    .edit().add(new Incappable("spelunker", "spelunker-hurt", 5))
+                       .add(new Hint("Spelunker. Gathers treasures!"))
+                       .add(new Anim("spelunker", 13)); break;
             default: throw new RuntimeException("unknown agent type " + type);
         }
 
@@ -384,10 +391,10 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         anim.color.a= 0.1f + (MathUtils.random(0.1f, 0.2f) * (1f/anim.scale));
         anim.layer = -98;
         return world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(anim)
-                .addComponent(physics)
-                .addComponent(clamped);
+		        .edit().add(new Pos(cx, cy))
+                .add(anim)
+                .add(physics)
+                .add(clamped).getEntity();
     }
 
     private Entity createBird(int cx, int cy) {
@@ -396,21 +403,21 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
         CastleBlock castleBlock = new CastleBlock();
         castleBlock.fadeoutOnReplace=true;
         return world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(castleBlock)
-                .addComponent(new ColorAnimation(new Color(1, 1, 1, 0), new Color(1, 1, 1, 1), Interpolation.linear, 1f, 1f))
-                .addComponent(new Anim("bird", 11));
+		        .edit().add(new Pos(cx, cy))
+                .add(castleBlock)
+                .add(new ColorAnimation(new Color(1, 1, 1, 0), new Color(1, 1, 1, 1), Interpolation.linear, 1f, 1f))
+                .add(new Anim("bird", 11)).getEntity();
     }
 
     private Entity createElevator(int cx, int cy) {
         world.createEntity()
-                .addComponent(new Pos(cx, cy))
-                .addComponent(new Bounds(0,0,23,25))
-                .addComponent(new Hint("Mining elevator"))
-                .addComponent(new Anim("lift-frame", -80)).addToWorld();
+		        .edit().add(new Pos(cx, cy))
+                .add(new Bounds(0, 0, 23, 25))
+                .add(new Hint("Mining elevator"))
+                .add(new Anim("lift-frame", -80));
         Entity cage = world.createEntity()
-                .addComponent(new Pos(cx+3, cy))
-                .addComponent(new Anim("lift-cage", -79));
+		        .edit().add(new Pos(cx + 3, cy))
+                .add(new Anim("lift-cage", -79)).getEntity();
         return cage;
     }
 
@@ -422,46 +429,46 @@ public class EntityFactorySystem extends AbstractEntityFactorySystem {
     }
 
     private Entity createHills(int cx, int cy) {
-        return world.createEntity().addComponent(new Pos(cx,cy)).addComponent(new Anim("hills", 10));
+        return world.createEntity().edit().add(new Pos(cx, cy)).add(new Anim("hills", 10)).getEntity();
     }
 
     private Entity createBackground() {
-        return world.createEntity().addComponent(new Pos(0,0)).addComponent(new Anim("background", -99));
+        return world.createEntity().edit().add(new Pos(0, 0)).add(new Anim("background", -99)).getEntity();
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        createEntity("background",0,0).addToWorld();
-        createEntity("hills",0,0).addToWorld();
-        Entity lift = createEntity("lift", 251, 30).addComponent(new Physics()).addComponent(new Gravity(-5.0f));
+        createEntity("background", 0, 0);
+        createEntity("hills", 0, 0);
+        Entity lift = createEntity("lift", 251, 30).edit().add(new Physics()).add(new Gravity(-5.0f)).getEntity();
         tagManager.register("lift", lift);
-        lift.addToWorld();
 
-        createEntity("queen",0, SERVANT_Y).addToWorld();
+        createEntity("queen", 0, SERVANT_Y);
 
         createEntity("marker-monster", RADAR_X+10, RADAR_Y +60)
-                .addComponent(new Tutorial(1, "click")).addToWorld();
+		        .edit()
+                .add(new Tutorial(1, "click"));
 
         for ( int i=0; i<20; i++)
         {
             createEntity("cloud",
-                    (int)MathUtils.random(-40,Gdx.graphics.getWidth() / G.CAMERA_ZOOM_FACTOR+10),
-                    (int)MathUtils.random((Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR) * 0.4f,(Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR)* 0.9f)).addToWorld();
+		            (int) MathUtils.random(-40, Gdx.graphics.getWidth() / G.CAMERA_ZOOM_FACTOR + 10),
+		            (int) MathUtils.random((Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR) * 0.4f, (Gdx.graphics.getHeight() / G.CAMERA_ZOOM_FACTOR) * 0.9f));
         }
 
-        createEntity("indicator").addToWorld();
-        createEntity("mouse").addToWorld();
-        createEntity("radar", RADAR_X, RADAR_Y).addToWorld();
+        createEntity("indicator");
+        createEntity("mouse");
+        createEntity("radar", RADAR_X, RADAR_Y);
 
         int tmpY = (int)(cameraSystem.getPixelHeight() - 22);
         int tmpX = 140;
         int stepSize = 16;
         createEntity("expand-wall", tmpX, tmpY)
-                .addComponent(new Tutorial(2, "click")).addComponent(new Cost(8, 1)).addToWorld();
-        createEntity("expand-spelunker", tmpX + stepSize, tmpY).addComponent(new Cost(25,2)).addToWorld();
-        createEntity("expand-knight", tmpX + stepSize * 2, tmpY).addComponent(new Cost(40,20)).addToWorld();
-        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).addComponent(new Cost(80, 80)).addToWorld();
+		        .edit().add(new Tutorial(2, "click")).add(new Cost(8, 1));
+        createEntity("expand-spelunker", tmpX + stepSize, tmpY).edit().add(new Cost(25, 2));
+        createEntity("expand-knight", tmpX + stepSize * 2, tmpY).edit().add(new Cost(40, 20));
+        createEntity("expand-mage", tmpX + stepSize * 3, tmpY).edit().add(new Cost(80, 80));
 
     }
 }

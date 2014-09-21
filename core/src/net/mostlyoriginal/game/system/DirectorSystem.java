@@ -40,11 +40,11 @@ public class DirectorSystem extends VoidEntitySystem {
             // slowly increase difficulty.
 
             if (MathUtils.random(100) < 20) {
-                entityFactory.createEntity("marker-gem", randomRadarX(), randomRadarY()).addToWorld();
+                entityFactory.createEntity("marker-gem", randomRadarX(), randomRadarY());
             } else if (MathUtils.random(100) < 50) {
-                entityFactory.createEntity("marker-gold", randomRadarX(), randomRadarY()).addToWorld();
+                entityFactory.createEntity("marker-gold", randomRadarX(), randomRadarY());
             } else {
-                entityFactory.createEntity("marker-dungeon", randomRadarX(), randomRadarY()).addToWorld();
+                entityFactory.createEntity("marker-dungeon", randomRadarX(), randomRadarY());
             }
         }
 
@@ -53,9 +53,9 @@ public class DirectorSystem extends VoidEntitySystem {
             portalCooldown = portalInterval;
             // slowly increase difficulty.
             portalInterval = MathUtils.clamp((portalInterval * 0.95f) - 1f, 5, 9999);
-            entityFactory.createEntity("marker-portal", randomRadarX(), randomRadarY())
-                    .addComponent(new Schedule().wait(STARTING_PORTAL_INTERVAL + 5f)
-                            .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 1f, 1f)).deleteFromWorld()).addToWorld();
+            entityFactory.createEntity("marker-portal", randomRadarX(), randomRadarY()).
+                    edit().add(new Schedule().wait(STARTING_PORTAL_INTERVAL + 5f)
+                            .add(new ColorAnimation(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), Interpolation.linear, 1f, 1f)).deleteFromWorld());
         }
     }
 

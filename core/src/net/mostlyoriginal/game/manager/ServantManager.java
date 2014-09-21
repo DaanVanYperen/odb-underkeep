@@ -51,7 +51,6 @@ public class ServantManager extends Manager {
 
         if ( entity != null ) {
             actor[y][x] = entity;
-            actor[y][x].addToWorld();
         }
     }
 }

@@ -6,8 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.3'
-        classpath 'com.android.tools.build:gradle:0.9+'
-        classpath 'com.github.jtakakura:gradle-robovm-plugin:0.0.7'
+//        classpath 'com.android.tools.build:gradle:0.9+'
+//        classpath 'com.github.jtakakura:gradle-robovm-plugin:0.0.7'
     }
 }
 
@@ -20,6 +20,7 @@ allprojects {
         appName = 'GameTemplate'
         gdxVersion = '1.2.0'
         roboVMVersion = '0.0.11'
+        artemisVersion = '0.6.6-SNAPSHOT'
     }
 
     repositories {
@@ -32,6 +33,8 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
 
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 
     dependencies {
         compile project(":core")
@@ -40,6 +43,7 @@ project(":desktop") {
     }
 }
 
+/*
 project(":android") {
     apply plugin: "android"
 
@@ -68,7 +72,7 @@ project(":ios") {
         compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
     }
-}
+}*/
 
 project(":html") {
     apply plugin: "gwt"
@@ -81,23 +85,26 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
 
+
         // Support for artemis-odb
-        compile "net.onedaybeard.artemis:artemis-odb-gwt:0.6.5"
-        compile "net.onedaybeard.artemis:artemis-odb-gwt:0.6.5:sources"
-        compile "net.onedaybeard.artemis:artemis-odb:0.6.5:sources"
+        compile "net.onedaybeard.artemis:artemis-odb-gwt:$artemisVersion"
+        compile "net.onedaybeard.artemis:artemis-odb-gwt:$artemisVersion:sources"
+        compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion:sources"
     }
 }
 
 project(":core") {
     apply plugin: "java"
 
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
 
         // Support for artemis-odb
-        compile "net.onedaybeard.artemis:artemis-odb:0.6.5"
-        compile "net.onedaybeard.artemis:artemis-odb:0.6.5:sources"
+        compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
+        compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion:sources"
     }
 }
 

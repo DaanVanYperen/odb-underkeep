@@ -75,7 +75,7 @@ public class QuestSystem extends EntityProcessingSystem {
             if (quest.monsterSpawnCooldown <= 0) {
                 quest.monsterSpawnCooldown = MathUtils.random(quest.monsterSpawnDelayMin, quest.monsterSpawnDelayMax);
                 Pos pos = pm.get(e);
-                entityFactorySystem.createEntity("marker-monster", (int) (pos.x), (int) (pos.y + 7)).addToWorld();
+                entityFactorySystem.createEntity("marker-monster", (int) (pos.x), (int) (pos.y + 7));
             }
         }
     }
@@ -98,7 +98,7 @@ public class QuestSystem extends EntityProcessingSystem {
 
                 entityFactorySystem.createEntity(
                         "marker-gold",
-                        (int) (pos.x + 7 + vTmp.x), (int) (pos.y + 7 + (int) vTmp.y)).addToWorld();
+                        (int) (pos.x + 7 + vTmp.x), (int) (pos.y + 7 + (int) vTmp.y));
             }
         }
     }
@@ -143,11 +143,10 @@ public class QuestSystem extends EntityProcessingSystem {
                 homing.speedFactor *=  questee.travelSpeed;
 
                 Entity dot = entityFactorySystem.createEntity("tracker")
-                        .addComponent(homing);
+		                .edit().add(homing).getEntity();
                 Pos pos = pm.get(questEntity);
                 Pos posDot = pm.get(dot);
                 posDot.x = pos.x + 4;
-                dot.addToWorld();
                 questee.tracker = dot.getUuid();
             }
         }
